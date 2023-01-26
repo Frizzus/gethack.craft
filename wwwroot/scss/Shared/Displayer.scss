@@ -1,0 +1,16 @@
+#Displayer{
+    width: 95%;
+    margin: auto;
+
+    div{
+        background-color: black;
+        border-radius: 1rem;
+    }
+}
+
+.dispGrid{
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    grid-auto-rows: 12rem;
+}
