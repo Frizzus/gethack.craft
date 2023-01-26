@@ -25,7 +25,7 @@ afficher [composant]
 --
 +get;set;
 afficher [composant]
-+addComment(user:User, desc:string, post:Hack): void
++addComment(desc:string, post:Hack): void
 +addHack(title:string, tags:string, desc:string): Hack
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>420</x><y>180</y><w>410</w><h>250</h></coordinates><panel_attributes>UserAdmin
 --
