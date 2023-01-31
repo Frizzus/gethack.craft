@@ -1,22 +1,45 @@
 ﻿@inherits LayoutComponentBase
 
-<nav id="mainNav">
-    <section>
-        <a href="#">
-            <div data-nav="BuildHack"><img src="placeholder.svg" alt="blazorIcon"></div>
-        </a>
-        <a href="#">
-            <div data-nav="RedHack"><img src="placeholder.svg" alt="blazorIcon"></div>
-        </a>
-        <a href="#">
-            <div data-nav="LiteHack"><img src="placeholder.svg" alt="blazorIcon"></div>
-        </a>
-    </section>
-    <section>
-        <a href="#">
-            <div data-nav="Profil"><img src="placeholder.svg" alt="blazorIcon"></div>
-        </a>
-    </section>
-</nav>
-@Body
-<footer></footer>
+<span class="@globalClass">
+    <nav id="mainNav">
+        <section>
+            <a href="#" @onclick="setBuild">
+                <div data-nav="BuildHack"><img src="placeholder.svg" alt="blazorIcon"></div>
+            </a>
+            <a href="#" @onclick="setRedstone">
+                <div data-nav="RedHack"><img src="placeholder.svg" alt="blazorIcon"></div>
+            </a>
+            <a href="#" @onclick="setLite">
+                <div data-nav="LiteHack"><img src="placeholder.svg" alt="blazorIcon"></div>
+            </a>
+        </section>
+        <section>
+            <a href="#" @onclick="setProfile">
+                <div data-nav="Profil"><img src="placeholder.svg" alt="blazorIcon"></div>
+            </a>
+        </section>
+    </nav>
+    @Body
+    <footer></footer>
+</span>
+
+
+@code {
+
+    private string? globalClass {get;set;} = "build";
+    public void setBuild(){
+        globalClass = "build";
+    }
+
+    public void setRedstone(){
+        globalClass = "redstone";
+    }
+
+    public void setLite(){
+        globalClass = "lite";
+    }
+
+    public void setProfile(){
+        globalClass = "profileColor";
+    }
+}

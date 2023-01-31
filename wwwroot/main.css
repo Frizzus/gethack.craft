@@ -28,6 +28,30 @@
   content: "An error has occurred.";
 }
 
+.build {
+  --primary: darkgreen;
+  --primary-hover: green;
+  --primary-focus: lightgreen;
+}
+
+.redstone {
+  --primary: maroon;
+  --primary-hover: darkred;
+  --primary-focus: tomato;
+}
+
+.lite {
+  --primary: dodgerblue;
+  --primary-hover: deepskyblue;
+  --primary-focus: aqua;
+}
+
+.profileColor {
+  --primary: dodgerblue;
+  --primary-hover: deepskyblue;
+  --primary-focus: aqua;
+}
+
 /*!
  * Pico.css v1.5.6 (https://picocss.com)
  * Copyright 2019-2022 - Licensed under MIT
@@ -243,9 +267,9 @@ kbd {
   --h6-color: #4d606d;
   --muted-color: hsl(205deg, 10%, 50%);
   --muted-border-color: hsl(205deg, 20%, 94%);
-  --primary: hsl(195deg, 85%, 41%);
-  --primary-hover: hsl(195deg, 90%, 32%);
-  --primary-focus: rgba(16, 149, 193, 0.125);
+  --primary: hsl(110deg, 85%, 41%);
+  --primary-hover: hsl(110deg, 90%, 32%);
+  --primary-focus: rgba(45, 193, 16, 0.125);
   --primary-inverse: #E8E8E8;
   --secondary: hsl(205deg, 15%, 41%);
   --secondary-hover: hsl(205deg, 20%, 32%);
@@ -349,9 +373,9 @@ kbd {
     --h6-color: #afbbc4;
     --muted-color: hsl(205deg, 10%, 50%);
     --muted-border-color: #1f2d38;
-    --primary: hsl(195deg, 85%, 41%);
-    --primary-hover: hsl(195deg, 80%, 50%);
-    --primary-focus: rgba(16, 149, 193, 0.25);
+    --primary: hsl(110deg, 85%, 41%);
+    --primary-hover: hsl(110deg, 80%, 50%);
+    --primary-focus: rgba(45, 193, 16, 0.25);
     --primary-inverse: #E8E8E8;
     --secondary: hsl(205deg, 15%, 41%);
     --secondary-hover: hsl(205deg, 10%, 50%);
@@ -455,9 +479,9 @@ kbd {
   --h6-color: #afbbc4;
   --muted-color: hsl(205deg, 10%, 50%);
   --muted-border-color: #1f2d38;
-  --primary: hsl(195deg, 85%, 41%);
-  --primary-hover: hsl(195deg, 80%, 50%);
-  --primary-focus: rgba(16, 149, 193, 0.25);
+  --primary: hsl(110deg, 85%, 41%);
+  --primary-hover: hsl(110deg, 80%, 50%);
+  --primary-focus: rgba(45, 193, 16, 0.25);
   --primary-inverse: #E8E8E8;
   --secondary: hsl(205deg, 15%, 41%);
   --secondary-hover: hsl(205deg, 10%, 50%);
