@@ -2,26 +2,33 @@
 
 <header>
     <h1>@welcomMessage</h1>
-    <p>GetHack.craft has been created for everyone to post their small creation to inspire everyone in their building !</p>
-    <p><small>Start searching or maybe you want to <a href="#">create an account ?</a></small></p>
+    <p>GetHack.craft has been created for everyone to post their small creation to inspire everyone in their building !
+    </p>
+    <p><small>Start searching ! or maybe you want to <a href="#">create an account</a> ?</small></p>
 </header>
 <main>
-    <Displayer nbDiv=50/>
+    <form action="" method="post">
+        
+    </form>
+    <Displayer nbDiv=50 />
 </main>
 
-@code{
+@code {
     [Parameter]
     public string welcomMessage { get; set; } = "test";
 
+    private String[] catchesPhrases = new String[10] { "Should not be watched while driving", "Made by Frizzus !", "Oh Man !", "Creeper ...", "SoundTrack by C418, Lena Raine and Kumi Tanioka", "12345 is a bad password !", "Lives in a pineapple under the sea !", "What the hell is Oldroot", "Herobrine removed", "Bugrock edition !" };
 
-    public Index(){
+
+    public Index()
+    {
         this.welcomMessage = setMessage();
     }
-    private string setMessage(){
-        Random rand = new Random();
-        String[] catchesPhrases = new String[10] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
-        return catchesPhrases[rand.Next(10)];
+    private string setMessage()
+    {
+        Random rand = new Random();
+        return catchesPhrases[rand.Next(catchesPhrases.Length)];
     }
 
     // TODO : faire en sorte de changer le titre sur reload
