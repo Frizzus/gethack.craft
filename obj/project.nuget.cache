@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Vr9tNIBAqiG8dFMBdQBqNwiqgRoNdZoZ92oclxsjvks3i6R1qq9pKgcNrjD2YDID3tH8MDOqqpY6nWX/cyVr5w==",
+  "dgSpecHash": "4VdrTQKhoBmC4/GxSMwdcoFWgb2N/tpc2kiFxQQZLIwgMhBcxly40MvVx5w3opoQvBQm5Xbq2alhWMoYcz1khg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Stagiaire\\Documents\\Web\\GetCraft\\GetCraft.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Stagiaire\\.nuget\\packages\\node.js\\5.3.0\\node.js.5.3.0.nupkg.sha512",
+    "C:\\Users\\Stagiaire\\.nuget\\packages\\nogit\\0.1.0\\nogit.0.1.0.nupkg.sha512",
+    "C:\\Users\\Stagiaire\\.nuget\\packages\\npm\\3.5.2\\npm.3.5.2.nupkg.sha512"
+  ],
   "logs": []
 }
