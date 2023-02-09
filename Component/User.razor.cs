@@ -86,7 +86,7 @@ public class User : BaseUser{
         }
     }
     //TODO : changed to private for safety
-    private string BanTime{
+    public string BanTime{
         get;set;
     }
     //TODO : changed to private for safety

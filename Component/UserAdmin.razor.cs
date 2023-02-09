@@ -89,7 +89,7 @@ class UserAdmin : BaseUser
         }
     }
     //TODO : changed to private for safety
-    private string BanTime{
+    public string BanTime{
         get;set;
     }
     //TODO : changed to private for safety
@@ -172,11 +172,31 @@ class UserAdmin : BaseUser
         this.personnalComment.RemoveAt(indexToSupr);
     }
 
+    /// <summary>
+    /// An admin method to delete any comment safely
+    /// </summary>
+    /// <param name="comment">The comment targeted to be deleted</param>
     public void adminDelete(Comment comment){
         comment.relatedUser.deleteOwn(comment);
     }
 
+    /// <summary>
+    /// An admin method to delete any hack safely 
+    /// </summary>
+    /// <param name="post">The post targeted to be deleted</param>
     public void adminDelete(Hack post){
         post.relatedUser.deleteOwn(post);
+    }
+
+    /// <summary>
+    /// An admin method to ban a user for a certain amount of time
+    /// </summary>
+    /// <param name="user">The future banned user</param>
+    /// <param name="untilDate">The Date until the user will be banned</param>
+    public void adminBan(User user, string untilDate){
+        //Update in DB
+
+        user.banned = true;
+        user.BanTime = untilDate;
     }
 }

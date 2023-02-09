@@ -10,9 +10,10 @@ public struct Hack{
     public bool reported;
     public string? reasonReported;
     public BaseUser relatedUser;
+    public string _hackType;
 
 
-    public Hack(BaseUser user, string title = "default"){
+    public Hack(BaseUser user, string title = "default", string type = "build"){
         if (title == "default")
         {
             throw new Exception("title have to be specified");
@@ -25,6 +26,7 @@ public struct Hack{
         this.reported = false;
         this.reasonReported = null;
         this.relatedUser = user;
+        this._hackType = type;
     }
 
 
@@ -39,6 +41,17 @@ public struct Hack{
         }
         set {
             this._tags = value.Split(' ');
+        }
+    }
+
+    public string HackType{
+        get => this._hackType;
+        set{
+            if (!(Equals(value, "build") || Equals(value, "redstone")))
+            {
+                throw new Exception("\"" + value + "\" is not a valid value (\"build\" OR \"redstone\")");
+            }
+            this._hackType = value;
         }
     }
 
