@@ -1,15 +1,37 @@
-class User{
+public class User : BaseUser{
     public string username;
-    public string password;
+    public string _password;
     private string _email;
-    private string _profilePicture;
-    public string description;
-    public bool banned;
-    private DateTime _banTime;
+    private string? _profilePicture;
+    public string? description;
+    public bool? banned;
+    private DateTime? _banTime;
+    public List<Hack> hackLoved;
+    public List<Hack> hackPosted;
+    public List<Comment> personnalComment;
 
 
     //TODO : changed to private for safety
-    private User(){}
+    private User(string password, string email, string username = ""){
+        
+        if (password == "")
+        {
+            throw new Exception("you have to insert a password");
+        }
+        if (username == "")
+        {
+            this.username = email;
+        }
+        
+        this.username = username;
+        this.Password = password;
+        this.Email = email;
+        this.hackLoved = new List<Hack>();
+        this.hackPosted = new List<Hack>();
+        this.personnalComment = new List<Comment>();
+    }
+
+    // Property
 
 
     /// <summary>
@@ -60,7 +82,7 @@ class User{
                         if first => invalid
                         if last => invalid
             */
-
+            this._email = value;
         }
     }
     //TODO : changed to private for safety
@@ -70,6 +92,81 @@ class User{
     //TODO : changed to private for safety
     private string ProfilePicture{
         get;set;
+    }
+
+    private string Password{
+        get => this._password;
+        set {
+            foreach (var ch in new char[] {'$', '%', '*', '#', '&', '€', '_', '-'})
+            {
+                if (!value.Contains(ch)){
+                    throw new Exception("Your password does not contain any special characters");
+                }
+            }
+
+            foreach (var ch in new char[] {'1', '2', '3', '4', '5', '6', '7', '8', '9'})
+            {
+                if (!value.Contains(ch)){
+                    throw new Exception("Your password does not contain any number");
+                }
+            }
+
+            this._password = value;
+        }
+    }
+
+
+    // Methods
+
+
+    public Comment postComment(Hack post, string description = ""){
+        // Post the comment to the DB
+        Comment comment = new Comment(this, description);
+        this.personnalComment.Add(comment);
+        return comment;
+
+    }
+
+    public Hack PostHack(String title, String tags, String description){
+        // Upload the Hack to the BD
+
+        Hack h = new Hack(this, title);
+        h.description = description;
+        h.Tags = tags;
+
+        this.hackPosted.Add(h);
+
+        return h;
+    }
+
+    public void setFavorite(Hack post){
+        this.hackLoved.Add(post);
+
+        // set the hack to loved in the DB
+    }
+
+    public void unsetFavorite(Hack post){
+        // delete the record in the DB
+
+        int indexToSupr = this.hackLoved.FindIndex(0, x => (x.title == post.title && x.description == post.description && x.Tags == post.Tags));
+
+        this.hackLoved.RemoveAt(indexToSupr);
+    }
+
+    public void deleteOwn(Hack post){
+        // delete the record in the DB
+
+        int indexToSupr = this.hackPosted.FindIndex(0, x => (x.title == post.title && x.description == post.description && x.Tags == post.Tags));
+
+        this.hackPosted.RemoveAt(indexToSupr);
+    }
+
+    public void deleteOwn(Comment comment){
+        // delete the record in the DB
+
+        int indexToSupr = this.personnalComment.FindIndex(0, x => (x.relatedUser == comment.relatedUser && x.content == comment.content));
+
+        this.personnalComment.RemoveAt(indexToSupr);
     }
 
 }

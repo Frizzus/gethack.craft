@@ -2,22 +2,29 @@
 
 public struct Hack{
     
-    public string title;
+    public string? title;
     private string[] _tags;
     private string? _img;
     public string description;
     public int nbLikes;
     public bool reported;
     public string? reasonReported;
+    public BaseUser relatedUser;
 
 
-    public Hack(string title){
+    public Hack(BaseUser user, string title = "default"){
+        if (title == "default")
+        {
+            throw new Exception("title have to be specified");
+        }
+
         this.title = title;
         this._tags = new string[0];
         this.description = "";
         this.nbLikes = 0;
         this.reported = false;
         this.reasonReported = null;
+        this.relatedUser = user;
     }
 
 
