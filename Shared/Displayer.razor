@@ -23,8 +23,9 @@
 
     public void FetchHacks(){
         
+        IDictionary<string,string> dotEnv = FrizzusUtils.getEnvArray(@".env");
 
-        string cs = @"server=localhost;userid=Frizzus;password=bX]s2yeisdAsif*r;database=getcraft";
+        string cs = $"server={dotEnv["DB_HOST"]};userid={dotEnv["DB_USER"]};password={dotEnv["DB_PASSWORD"]};database={dotEnv["DB_DATABASE"]}";
         using var con = new MySqlConnection(cs);
         con.Open();
 
