@@ -1,3 +1,4 @@
+using MySql.Data.MySqlClient;
 public class User : BaseUser{
     public string username;
     public string _password;

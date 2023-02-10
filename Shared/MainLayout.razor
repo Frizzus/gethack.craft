@@ -19,26 +19,33 @@
             </a>
         </section>
     </nav>
+    <h2 style="padding-top: 200px;">@data</h2>
     @Body
     <footer></footer>
 </span>
 
 @code {
 
+    private int data = 0;
+
     private string? globalClass {get;set;} = "build";
     public void setBuild(){
         globalClass = "build";
+        data++;
     }
 
     public void setRedstone(){
         globalClass = "redstone";
+        data++;
     }
 
     public void setLite(){
         globalClass = "lite";
+        data--;
     }
 
     public void setProfile(){
         globalClass = "profileColor";
+        data++;
     }
 }

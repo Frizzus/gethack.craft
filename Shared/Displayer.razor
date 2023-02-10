@@ -1,10 +1,10 @@
-@using Microsoft.JSInterop
-@inject IJSRuntime JS;
+@using MySql.Data.MySqlClient;
 
-<div class="dispGrid" id="Displayer">
+<div class="dispGrid" id="Displayer" onclick="increment">
+    <button>@data</button>
     @for (int i = 0; i < nbDiv; i++)
     {
-        <div/>
+        <div></div>
     }
 </div>
 
@@ -13,4 +13,25 @@
 
     [Parameter]
     public int nbDiv { get; set; }
+
+    [Parameter]
+    public int data {get; set;} = 6;
+
+    public void increment(){
+        data++;
+    }
+
+    public void FetchHacks(){
+        
+
+        string cs = @"server=localhost;userid=Frizzus;password=bX]s2yeisdAsif*r;database=getcraft";
+        using var con = new MySqlConnection(cs);
+        con.Open();
+
+        var stm = "SELECT * FROM Hack";
+        var cmd = new MySqlCommand(stm, con);
+
+        var version = cmd.ExecuteScalar().ToString();
+        Console.WriteLine($"MySQL version: {version}");
+    }
 }
