@@ -1,19 +1,7 @@
 using MySql.Data.MySqlClient;
 public class User : BaseUser{
-    public string username;
-    public string _password;
-    private string _email;
-    private string? _profilePicture;
-    public string? description;
-    public bool? banned;
-    private DateTime? _banTime;
-    public List<Hack> hackLoved;
-    public List<Hack> hackPosted;
-    public List<Comment> personnalComment;
 
-
-    //TODO : changed to private for safety
-    private User(string password, string email, string username = ""){
+    public User(string password, string email, string username = ""){
         
         if (password == "")
         {
@@ -32,9 +20,24 @@ public class User : BaseUser{
         this.personnalComment = new List<Comment>();
     }
 
+
+    public int id;
+    public string username;
+    public string _password = "";
+    private string _email = "";
+    private string? _profilePicture;
+    public string? description;
+    public bool? banned;
+    private DateTime? _banTime;
+    public List<Hack> hackLoved;
+    public List<Hack> hackPosted;
+    public List<Comment> personnalComment;
+    private DateTime _dateCreated;
+    
+
     // Property
-
-
+    
+    public DateTime DateCreated {get;}
     /// <summary>
     /// Property for a valid email :
     /// <list type="bullet">
@@ -86,12 +89,10 @@ public class User : BaseUser{
             this._email = value;
         }
     }
-    //TODO : changed to private for safety
-    public string BanTime{
+    public string? BanTime{
         get;set;
     }
-    //TODO : changed to private for safety
-    private string ProfilePicture{
+    private string? ProfilePicture{
         get;set;
     }
 
@@ -122,7 +123,10 @@ public class User : BaseUser{
 
     public Comment postComment(Hack post, string description = ""){
         // Post the comment to the DB
-        Comment comment = new Comment(this, description);
+        // Create the record in the DB
+        // Link it to the user
+        // Link it to the hack
+        Comment comment = new Comment(this, post,description);
         this.personnalComment.Add(comment);
         return comment;
 

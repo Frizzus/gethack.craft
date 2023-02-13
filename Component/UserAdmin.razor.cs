@@ -1,20 +1,7 @@
 class UserAdmin : BaseUser
 {
-    public string username;
-    public string _password;
-    private string _email;
-    private string? _profilePicture;
-    public string? description;
-    public bool? banned;
-    private DateTime? _banTime;
-    public List<Hack> hackLoved;
-    public List<Hack> hackPosted;
-    public List<Hack> hackToInspect;
-    public List<Comment> personnalComment;
 
-
-    //TODO : changed to private for safety
-    private UserAdmin(string password, string email, string username = ""){
+    public UserAdmin(string password, string email, string username = ""){
         
         if (password == "")
         {
@@ -34,8 +21,25 @@ class UserAdmin : BaseUser
         this.hackToInspect = new List<Hack>();
     }
 
+    public int id;
+    public string username;
+    public string _password = "";
+    private string _email = "";
+    private string? _profilePicture;
+    public string? description;
+    public bool? banned;
+    private DateTime? _banTime;
+    public List<Hack> hackLoved;
+    public List<Hack> hackPosted;
+    public List<Hack> hackToInspect;
+    public List<Comment> personnalComment;
+    private DateTime _dateCreated;
+
+
+
     // Property
 
+    public DateTime DateCreated {get;}
 
     /// <summary>
     /// Property for a valid email :
@@ -89,11 +93,11 @@ class UserAdmin : BaseUser
         }
     }
     //TODO : changed to private for safety
-    public string BanTime{
+    public string? BanTime{
         get;set;
     }
     //TODO : changed to private for safety
-    private string ProfilePicture{
+    private string? ProfilePicture{
         get;set;
     }
 
@@ -124,7 +128,7 @@ class UserAdmin : BaseUser
 
     public Comment postComment(Hack post, string description = ""){
         // Post the comment to the DB
-        Comment comment = new Comment(this, description);
+        Comment comment = new Comment(this, post, description);
         this.personnalComment.Add(comment);
         return comment;
 

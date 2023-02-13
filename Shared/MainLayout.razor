@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@using MySql.Data.MySqlClient;
+
 
 <span class="@globalClass">
     <nav id="mainNav">
@@ -21,11 +23,12 @@
     </nav>
     <h2 style="padding-top: 200px;">@data</h2>
     @Body
-    <footer></footer>
+    <footer @onclick="testA">@bdData</footer>
 </span>
 
 @code {
 
+    private string? bdData = "";
     private int data = 0;
 
     private string? globalClass {get;set;} = "build";
@@ -47,5 +50,34 @@
     public void setProfile(){
         globalClass = "profileColor";
         data++;
+    }
+
+    public void testA(){
+        
+        IDictionary<string,string> dotEnv = FrizzusUtils.getEnvArray(@"\.env");
+
+        string cs = $"server={dotEnv["DB_HOST"]};userid={dotEnv["DB_USER"]};password={dotEnv["DB_PASSWORD"]};database={dotEnv["DB_DATABASE"]}";
+        using var con = new MySqlConnection(cs);
+        con.Open();
+
+        var stm = "SELECT * FROM Hack";
+        var cmd = new MySqlCommand(stm, con);
+
+        MySqlDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+
+            bdData = bdData + reader.GetInt32(0).ToString();
+            bdData = bdData + reader.GetString(1).ToString();
+            bdData = bdData + reader.GetString(2).ToString();
+            bdData = bdData + reader.GetString(3).ToString();
+            bdData = bdData + reader.GetInt32(4).ToString();
+            bdData = bdData + reader.GetBoolean(5).ToString();
+            bdData = bdData + reader.GetString(5).ToString();
+            
+        }
+
+        
     }
 }

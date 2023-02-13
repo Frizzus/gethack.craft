@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.0.0"><zoom_level>11</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>1111</x><y>209</y><w>286</w><h>220</h></coordinates><panel_attributes>Hack
+<diagram program="umletino" version="15.0.0"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>531</x><y>171</y><w>234</w><h>216</h></coordinates><panel_attributes>Hack
 --
 +title: string
 -tags: string[]
@@ -8,13 +8,17 @@
 +reported: boolean
 +reasonReported: string
 +hackType: string
+-dateCreated: Date
 --
 +get;set;
++deleteFromDB():bool
++updateToDB():bool
++constructForDB():bool
 afficher [composant]
 
 
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1650</x><y>275</y><w>407</w><h>308</h></coordinates><panel_attributes>User
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>972</x><y>225</y><w>333</w><h>288</h></coordinates><panel_attributes>User
 --
 +username: string
 +pwd: string
@@ -23,8 +27,12 @@ afficher [composant]
 +desc: string
 +ban:boolean
 -banTime: Date
+-dateCreated: Date
 --
 +get;set;
++deleteFromDB():bool
++updateToDB():bool
++constructForDB():bool
 afficher [composant]
 +postComment(desc:string, post: Hack): void
 +postHack(title:string, tags:string, desc:string): Hack
@@ -32,7 +40,7 @@ afficher [composant]
 +deleteOwn(Comment): bool
 +setFavorite(Hack): void
 +unsetFavorite(Hack): void
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>462</x><y>198</y><w>451</w><h>319</h></coordinates><panel_attributes>UserAdmin
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>162</y><w>369</w><h>306</h></coordinates><panel_attributes>UserAdmin
 --
 -username: string
 -pwd: string
@@ -40,8 +48,12 @@ afficher [composant]
 -desc: File
 -ban:boolean
 -banTime: Date
+-dateCreated: Date
 --
 +get;set;
++deleteFromDB():bool
++updateToDB():bool
++constructForDB():bool
 afficher [composant]
 +postComment(desc:string, post:Hack): void
 +postHack(title:string, tags:string, desc:string): Hack
@@ -51,67 +63,63 @@ afficher [composant]
 +unsetFavorite(Hack): void
 _+adminDelete(Comment): void_
 _+adminDelete(post: Hack): void_
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1133</x><y>660</y><w>220</w><h>132</h></coordinates><panel_attributes>Comment
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>549</x><y>540</y><w>180</w><h>108</h></coordinates><panel_attributes>Comment
 --
 text: VARCHAR(200)
 nbLikes: int
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>649</y><w>407</w><h>110</h></coordinates><panel_attributes>&lt;&lt;webapp&gt;&gt;
-Controller
---
---
-afficher [composant]
-_+addUser(username:string, pwd:string):void_
+-dateCreated: Date
 
-
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>1056</x><y>0</y><w>352</w><h>176</h></coordinates><panel_attributes>BaseUser
+--
++deleteFromDB():bool
++updateToDB():bool
++constructForDB():bool
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLInterface</id><coordinates><x>486</x><y>0</y><w>288</w><h>144</h></coordinates><panel_attributes>BaseUser
 --
 +postComment(desc:string, post:Hack): void
 +postHack(title:string, tags:string, desc:string): Hack
 +deleteOwn(Hack): bool
 +deleteOwn(Comment): bool
 +setFavorite(Hack): void
-+unsetFavorite(Hack): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1166</x><y>902</y><w>209</w><h>143</h></coordinates><panel_attributes>&lt;&lt;Static&gt;&gt;
-bdHandler
---
---
-_+executeQueue():bool_
-_+cacheDelete(data:Object):bool_
-_+cacheUpload(data:Object):bool_
-_+query():bool_</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1386</x><y>341</y><w>286</w><h>88</h></coordinates><panel_attributes>lt=-
++unsetFavorite(Hack): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>756</x><y>279</y><w>234</w><h>72</h></coordinates><panel_attributes>lt=-
 m1=0..n
 r1=-hackPosted[Hack]
 m2= 1
 r2=+relatedUser
-</panel_attributes><additional_attributes>10;50;170;50;240;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1386</x><y>253</y><w>286</w><h>77</h></coordinates><panel_attributes>lt=&lt;-
+</panel_attributes><additional_attributes>10;50;170;50;240;10</additional_attributes></element><element><id>Relation</id><coordinates><x>756</x><y>207</y><w>234</w><h>63</h></coordinates><panel_attributes>lt=&lt;-
 m1=0..n
 r1=-hackLoved[Hack]
-</panel_attributes><additional_attributes>10;20;170;20;240;50</additional_attributes></element><element><id>Relation</id><coordinates><x>902</x><y>319</y><w>231</w><h>88</h></coordinates><panel_attributes>lt=-
+</panel_attributes><additional_attributes>10;20;170;20;240;50</additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>261</y><w>189</w><h>72</h></coordinates><panel_attributes>lt=-
 m1=0..n
 r1=-hackPosted[Hack]
 m2= 1
-r2=+relatedUser</panel_attributes><additional_attributes>190;50;60;50;60;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>902</x><y>242</y><w>231</w><h>88</h></coordinates><panel_attributes>lt=&lt;-
+r2=+relatedUser</panel_attributes><additional_attributes>190;50;60;50;60;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>198</y><w>189</w><h>72</h></coordinates><panel_attributes>lt=&lt;-
 m1=0..n
 r1=-hackLoved[Hack]
-</panel_attributes><additional_attributes>190;20;50;20;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>902</x><y>385</y><w>231</w><h>77</h></coordinates><panel_attributes>lt=&lt;-
+</panel_attributes><additional_attributes>190;20;50;20;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>315</y><w>189</w><h>63</h></coordinates><panel_attributes>lt=&lt;-
 m1=0..n
 r1=-hackToInspect[Hack]
-</panel_attributes><additional_attributes>190;40;40;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1232</x><y>418</y><w>209</w><h>264</h></coordinates><panel_attributes>lt=&lt;-
+</panel_attributes><additional_attributes>190;40;40;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>378</y><w>171</w><h>180</h></coordinates><panel_attributes>lt=-
 m1=0..n
-r1=-relatedComment[Comment]</panel_attributes><additional_attributes>10;220;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>792</x><y>506</y><w>363</w><h>242</h></coordinates><panel_attributes>lt=-
-m1=0..n
-r1=-personnalComment[Comment]
-m2= 1
-r2=+relatedUser</panel_attributes><additional_attributes>310;190;60;190;20;160;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>506</y><w>385</w><h>286</h></coordinates><panel_attributes>lt=&lt;-
-m1=0..n
-r1=-toInspectComment[Comment]</panel_attributes><additional_attributes>330;230;70;230;20;200;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1342</x><y>572</y><w>451</w><h>165</h></coordinates><panel_attributes>lt=-
+r1=-relatedComment[Comment]
+m2=1
+r2=+relatedHack</panel_attributes><additional_attributes>10;180;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>459</y><w>297</w><h>153</h></coordinates><panel_attributes>lt=-
 m1=0..n
 r1=-personnalComment[Comment]
 m2= 1
-r2= +relatedUser</panel_attributes><additional_attributes>10;120;270;120;320;10</additional_attributes></element><element><id>Relation</id><coordinates><x>682</x><y>88</y><w>374</w><h>132</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>10;100;10;20;320;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1419</x><y>99</y><w>297</w><h>198</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>250;160;250;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>396</x><y>506</y><w>165</w><h>231</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>130;10;70;190;10;190</additional_attributes></element><element><id>Relation</id><coordinates><x>671</x><y>506</y><w>517</w><h>473</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>10;10;100;410;450;410</additional_attributes></element><element><id>Relation</id><coordinates><x>1364</x><y>572</y><w>484</w><h>418</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>420;10;300;360;10;360</additional_attributes></element><element><id>Relation</id><coordinates><x>1232</x><y>781</y><w>66</w><h>143</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>1364</x><y>407</y><w>121</w><h>539</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>30;10;90;10;30;470;10;470</additional_attributes></element></diagram>
+r2=+relatedUser</panel_attributes><additional_attributes>310;140;60;140;20;110;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>252</x><y>459</y><w>315</w><h>189</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n
+r1=-toInspectComment[Comment]</panel_attributes><additional_attributes>330;180;70;180;20;150;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>504</y><w>369</w><h>99</h></coordinates><panel_attributes>lt=-
+m1=0..n
+r1=-personnalComment[Comment]
+m2= 1
+r2= +relatedUser</panel_attributes><additional_attributes>10;80;270;80;320;10</additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>72</y><w>306</w><h>108</h></coordinates><panel_attributes>lt=.&gt;
+&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>10;100;10;20;320;20</additional_attributes></element><element><id>Relation</id><coordinates><x>783</x><y>81</y><w>243</w><h>162</h></coordinates><panel_attributes>lt=.&gt;
+&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>250;160;250;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>171</x><y>459</y><w>423</w><h>342</h></coordinates><panel_attributes>lt=.&gt;
+&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>10;10;100;360;450;360</additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>504</y><w>396</w><h>306</h></coordinates><panel_attributes>lt=.&gt;
+&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>420;10;300;320;10;320</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>639</y><w>54</w><h>117</h></coordinates><panel_attributes>lt=.&gt;
+&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>333</y><w>108</w><h>441</h></coordinates><panel_attributes>lt=.&gt;
+&lt;&lt;Use&gt;&gt;</panel_attributes><additional_attributes>30;10;90;10;40;470;10;470</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>576</x><y>747</y><w>144</w><h>108</h></coordinates><panel_attributes>DBObject
+--
++deleteFromDB():bool
++updateToDB():bool
++constructForDB():bool</panel_attributes><additional_attributes></additional_attributes></element></diagram>

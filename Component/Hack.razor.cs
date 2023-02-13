@@ -1,17 +1,6 @@
 
 
 public struct Hack{
-    
-    public string? title;
-    private string[] _tags;
-    private string? _img;
-    public string description;
-    public int nbLikes;
-    public bool reported;
-    public string? reasonReported;
-    public BaseUser relatedUser;
-    public string _hackType;
-
 
     public Hack(BaseUser user, string title = "default", string type = "build"){
         if (title == "default")
@@ -29,7 +18,21 @@ public struct Hack{
         this._hackType = type;
     }
 
+    
+    public int id;
+    public string? title;
+    private string[] _tags;
+    private string? _img;
+    public string description;
+    public int nbLikes;
+    public bool reported;
+    public string? reasonReported;
+    public BaseUser relatedUser;
+    public string _hackType;
+    private DateTime _dateCreated;
 
+
+    public DateTime DateCreated {get;}
     public string Tags {
         get {
             string temp = "";
