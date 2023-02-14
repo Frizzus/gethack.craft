@@ -33,13 +33,13 @@ class UserAdmin : BaseUser
     public List<Hack> hackPosted;
     public List<Hack> hackToInspect;
     public List<Comment> personnalComment;
-    private DateTime _recentUpdate;
+    private DateTime _lastUpdated;
 
 
 
     // Property
 
-    public DateTime RecentUpdate {get;}
+    public DateTime LastUpdated {get;}
 
     /// <summary>
     /// Property for a valid email :
@@ -134,12 +134,10 @@ class UserAdmin : BaseUser
 
     }
 
-    public Hack PostHack(String title, String tags, String description){
+    public Hack PostHack(String title, String tags, String description, string category){
         // Upload the Hack to the BD
 
-        Hack h = new Hack(this, title);
-        h.description = description;
-        h.Tags = tags;
+        Hack h = new Hack(this, title: title, type: category, tags: tags, description: description);
 
         this.hackPosted.Add(h);
 

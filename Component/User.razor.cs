@@ -32,12 +32,12 @@ public class User : BaseUser{
     public List<Hack> hackLoved;
     public List<Hack> hackPosted;
     public List<Comment> personnalComment;
-    private DateTime _recentUpdate;
+    private DateTime _lastUpdated;
     
 
     // Property
     
-    public DateTime RecentUpdate {get;}
+    public DateTime LastUpdated {get;}
     /// <summary>
     /// Property for a valid email :
     /// <list type="bullet">
@@ -132,13 +132,10 @@ public class User : BaseUser{
 
     }
 
-    public Hack PostHack(String title, String tags, String description){
+    public Hack PostHack(String title, String tags, String description, string category){
         // Upload the Hack to the BD
 
-        Hack h = new Hack(this, title);
-        h.description = description;
-        h.Tags = tags;
-
+        Hack h = new Hack(this, title: title, type: category, tags: tags, description: description);
         this.hackPosted.Add(h);
 
         return h;

@@ -16,7 +16,7 @@ public interface BaseUser{
     /// <param name="tags">tag to help searching through hacks</param>
     /// <param name="description">the description of the hack</param>
     /// <returns>A Hack</returns>
-    Hack PostHack(String title, String tags, String description);
+    Hack PostHack(String title, String tags, String description, string category);
 
     /// <summary>
     /// Set the hack to the favorite and update the DB
