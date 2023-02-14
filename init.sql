@@ -29,12 +29,13 @@ CREATE TABLE Hack(
     title VARCHAR(255),
     img_url VARCHAR(255),
     description VARCHAR(255),
-    nbLikes INT DEFAULT 0,
+    nb_likes INT DEFAULT 0,
     reported BOOLEAN DEFAULT FALSE,
     reason_reported VARCHAR(255),
     hack_type VARCHAR(15),
     id_user SMALLINT UNSIGNED NOT NULL,
     last_updated DATE DEFAULT CURRENT_DATE(),
+    tags VARCHAR(255),
 -- CLEFS
     PRIMARY KEY(id_hack),
     FOREIGN KEY(id_user) REFERENCES User(id_user)
