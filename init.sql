@@ -19,6 +19,7 @@ CREATE TABLE User(
     ban BOOLEAN DEFAULT FALSE,
     ban_time DATE DEFAULT NULL,
     is_admin BOOLEAN DEFAULT FALSE,
+    last_updated DATE DEFAULT CURRENT_DATE(),
 -- CLEFS
     PRIMARY KEY(id_user)
 );
@@ -33,6 +34,7 @@ CREATE TABLE Hack(
     reason_reported VARCHAR(255),
     hack_type VARCHAR(15),
     id_user SMALLINT UNSIGNED NOT NULL,
+    last_updated DATE DEFAULT CURRENT_DATE(),
 -- CLEFS
     PRIMARY KEY(id_hack),
     FOREIGN KEY(id_user) REFERENCES User(id_user)
@@ -44,6 +46,7 @@ CREATE TABLE Comment(
     nb_likes INT DEFAULT 0,
     id_hack SMALLINT UNSIGNED NOT NULL,
     id_user SMALLINT UNSIGNED NOT NULL,
+    last_updated DATE DEFAULT CURRENT_DATE(),
 -- CLEFS
     PRIMARY KEY(id_comment),
     FOREIGN KEY(id_hack) REFERENCES Hack(id_hack),
