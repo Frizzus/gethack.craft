@@ -15,10 +15,10 @@ public class Comment : DBObject{
     public int nbLikes;
     public BaseUser relatedUser;
     public Hack relatedHack;
-    private DateTime _dateCreated;
+    private DateTime _recentUpdate;
 
 
-    public DateTime DateCreated {get;}
+    public DateTime RecentUpdate {get;}
 
     public bool DeleteFromDB(){
         IDictionary<string,string> dotEnv = FrizzusUtils.getEnvArray(@"\.env");

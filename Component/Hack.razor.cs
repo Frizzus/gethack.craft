@@ -29,10 +29,10 @@ public struct Hack{
     public string? reasonReported;
     public BaseUser relatedUser;
     public string _hackType;
-    private DateTime _dateCreated;
+    private DateTime _recentUpdate;
 
 
-    public DateTime DateCreated {get;}
+    public DateTime RecentUpdate {get;}
     public string Tags {
         get {
             string temp = "";

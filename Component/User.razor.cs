@@ -32,12 +32,12 @@ public class User : BaseUser{
     public List<Hack> hackLoved;
     public List<Hack> hackPosted;
     public List<Comment> personnalComment;
-    private DateTime _dateCreated;
+    private DateTime _recentUpdate;
     
 
     // Property
     
-    public DateTime DateCreated {get;}
+    public DateTime RecentUpdate {get;}
     /// <summary>
     /// Property for a valid email :
     /// <list type="bullet">
@@ -153,7 +153,7 @@ public class User : BaseUser{
     public void unsetFavorite(Hack post){
         // delete the record in the DB
 
-        int indexToSupr = this.hackLoved.FindIndex(0, x => (x.title == post.title && x.description == post.description && x.Tags == post.Tags));
+        int indexToSupr = this.hackLoved.FindIndex(0, x => (x.id == post.id));
 
         this.hackLoved.RemoveAt(indexToSupr);
     }
@@ -161,7 +161,7 @@ public class User : BaseUser{
     public void deleteOwn(Hack post){
         // delete the record in the DB
 
-        int indexToSupr = this.hackPosted.FindIndex(0, x => (x.title == post.title && x.description == post.description && x.Tags == post.Tags));
+        int indexToSupr = this.hackPosted.FindIndex(0, x => (x.id == post.id));
 
         this.hackPosted.RemoveAt(indexToSupr);
     }
@@ -169,7 +169,7 @@ public class User : BaseUser{
     public void deleteOwn(Comment comment){
         // delete the record in the DB
 
-        int indexToSupr = this.personnalComment.FindIndex(0, x => (x.relatedUser == comment.relatedUser && x.content == comment.content));
+        int indexToSupr = this.personnalComment.FindIndex(0, x => (x.id == comment.id));
 
         this.personnalComment.RemoveAt(indexToSupr);
     }
