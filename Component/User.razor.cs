@@ -1,5 +1,5 @@
 using MySql.Data.MySqlClient;
-public class User : BaseUser{
+public class User : BaseUser, DBObject{
 
     public User(string password, string email, string username = ""){
         
@@ -342,4 +342,67 @@ public class User : BaseUser{
         this.personnalComment.RemoveAt(indexToSupr);
     }
 
+    public bool ConstructForDB(MySqlCommand request){
+        try
+        {
+            request.CommandText = "INSERT INTO User(username, pwd, email, profile_picture, description, ban, ban_time, is_admin, last_updated) VALUES(@username, @pwd, @email, @profile_picture, @description, @ban, @ban_time, @is_admin, @last_updated)";
+            request.Parameters.AddWithValue("@username", this.username);
+            request.Parameters.AddWithValue("@pwd", this._password);
+            request.Parameters.AddWithValue("@email", this._email);
+            request.Parameters.AddWithValue("@profile_picture", this.profilePicture);
+            request.Parameters.AddWithValue("@description", this.description);
+            request.Parameters.AddWithValue("@ban", this.banned);
+            request.Parameters.AddWithValue("@ban_time", this.banTime);
+            request.Parameters.AddWithValue("@last_updated", this._lastUpdated);
+            request.Parameters.AddWithValue("@is_admin", false);
+            request.Prepare();
+
+            request.ExecuteNonQuery();
+
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
+    public bool UpdateToDB(MySqlCommand request){
+        try
+        {
+            request.CommandText = "UPDATE User SET username = @username, pwd = @pwd, email = @email, profile_picture = @profile_picture, description = @description, ban = @ban, ban_time = @ban_time, last_updated = @last_updated";
+            request.Parameters.AddWithValue("@username", this.username);
+            request.Parameters.AddWithValue("@pwd", this._password);
+            request.Parameters.AddWithValue("@email", this._email);
+            request.Parameters.AddWithValue("@profile_picture", this.profilePicture);
+            request.Parameters.AddWithValue("@description", this.description);
+            request.Parameters.AddWithValue("@ban", this.banned);
+            request.Parameters.AddWithValue("@ban_time", this.banTime);
+            request.Parameters.AddWithValue("@last_updated", this._lastUpdated);
+            request.Prepare();
+
+            request.ExecuteNonQuery();
+
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
+    public bool DeleteFromDB(MySqlCommand request){
+        try
+        {
+            request.CommandText = "DELETE FROM User WHERE id_user = @id";
+            request.Parameters.AddWithValue("@id", this.id);
+            request.Prepare();
+
+            request.ExecuteNonQuery();
+
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
 }

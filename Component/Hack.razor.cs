@@ -152,7 +152,7 @@ public struct Hack : DBObject{
     public bool UpdateToDB(MySqlCommand request){
         try
         {
-            request.CommandText = "INSERT Hack SET nb_likes = @nb_likes, reported = @reported, reason_reported @reason_reported, last_updated = @last_updated";
+            request.CommandText = "UPDATE Hack SET nb_likes = @nb_likes, reported = @reported, reason_reported @reason_reported, last_updated = @last_updated";
             request.Parameters.AddWithValue("@nb_likes", this.nbLikes);
             request.Parameters.AddWithValue("@reported", this.reported);
             request.Parameters.AddWithValue("@reason_reported", this.reasonReported);

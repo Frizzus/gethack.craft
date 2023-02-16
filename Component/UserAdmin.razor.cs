@@ -17,7 +17,7 @@ class UserAdmin : BaseUser,DBObject
     public List<Comment> personnalComment;
     private DateTime _lastUpdated;
 
-    public UserAdmin(string password, string email, string username = ""){
+    public UserAdmin(string password, string email, MySqlCommand request, string username = ""){
         
         if (password == "")
         {
@@ -36,18 +36,11 @@ class UserAdmin : BaseUser,DBObject
         this.personnalComment = new List<Comment>();
         this.hackToInspect = new List<Hack>();
 
-        if (!this.ConstructForDB())
+        if (!this.ConstructForDB(request))
         {
             throw new Exception("The insertion of the object in the Database has failed");
         }
         // Get the id and the SQL server current date the DB give with AUTO-INCREMENT and then update the object with it
-
-        IDictionary<string,string> dotEnv = FrizzusUtils.getEnvArray(@"\.env");
-        MySqlConnection connection = new MySqlConnection($"server={dotEnv["DB_HOST"]};userid={dotEnv["DB_USER"]};password={dotEnv["DB_PASSWORD"]};database={dotEnv["DB_DATABASE"]};");
-        connection.Open();
-
-        MySqlCommand request = new MySqlCommand();
-        request.Connection = connection;
             
         // Getting the database id and date based on the most recent date from this.username
         request.CommandText = "SELECT id_user, last_updated FROM Comment WHERE last_updated = (SELECT MAX(last_updated) FROM User WHERE username = @username AND pwd = @password)";
@@ -59,7 +52,6 @@ class UserAdmin : BaseUser,DBObject
         this.id = data.GetInt32(0);
         this._lastUpdated = data.GetDateTime(1);
 
-        connection.Close();
     }
 
     public UserAdmin(string username, string password, MySqlCommand request){
@@ -327,21 +319,19 @@ class UserAdmin : BaseUser,DBObject
     // Methods
 
 
-    public Comment postComment(Hack post, string description = ""){
+    public Comment postComment(int postId, MySqlCommand request, string description = ""){
         // Post the comment to the DB
-        Comment comment = new Comment(this, post, description);
+        Comment comment = new Comment(this.id, postId, description, request);
         this.personnalComment.Add(comment);
+        this.UpdateToDB(request);
         return comment;
-
     }
 
-    public Hack PostHack(String title, String tags, String description, string category){
+    public Hack PostHack(String title, String tags, String description, string category, MySqlCommand request){
         // Upload the Hack to the BD
-
-        Hack h = new Hack(this.id, title: title, type: category, tags: tags, description: description);
-
+        Hack h = new Hack(this.id, title: title, type: category, tags: tags, description: description, request: request);
         this.hackPosted.Add(h);
-
+        this.UpdateToDB(request);
         return h;
     }
 
@@ -400,10 +390,70 @@ class UserAdmin : BaseUser,DBObject
         //Update in DB
 
         user.banned = true;
-        user.BanTime = untilDate;
+        user.banTime = untilDate;
     }
 
-    public bool ConstructForDB(){return false;}
-    public bool UpdateToDB(){return false;}
-    public bool DeleteFromDB(){return false;}
+    public bool ConstructForDB(MySqlCommand request){
+        try
+        {
+            request.CommandText = "INSERT INTO User(username, pwd, email, profile_picture, description, ban, ban_time, is_admin, last_updated) VALUES(@username, @pwd, @email, @profile_picture, @description, @ban, @ban_time, @is_admin, @last_updated)";
+            request.Parameters.AddWithValue("@username", this.username);
+            request.Parameters.AddWithValue("@pwd", this._password);
+            request.Parameters.AddWithValue("@email", this._email);
+            request.Parameters.AddWithValue("@profile_picture", this.profilePicture);
+            request.Parameters.AddWithValue("@description", this.description);
+            request.Parameters.AddWithValue("@ban", this.banned);
+            request.Parameters.AddWithValue("@ban_time", this.banTime);
+            request.Parameters.AddWithValue("@last_updated", this._lastUpdated);
+            request.Parameters.AddWithValue("@is_admin", true);
+            request.Prepare();
+
+            request.ExecuteNonQuery();
+
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
+    public bool UpdateToDB(MySqlCommand request){
+        try
+        {
+            request.CommandText = "UPDATE User SET username = @username, pwd = @pwd, email = @email, profile_picture = @profile_picture, description = @description, ban = @ban, ban_time = @ban_time, last_updated = @last_updated";
+            request.Parameters.AddWithValue("@username", this.username);
+            request.Parameters.AddWithValue("@pwd", this._password);
+            request.Parameters.AddWithValue("@email", this._email);
+            request.Parameters.AddWithValue("@profile_picture", this.profilePicture);
+            request.Parameters.AddWithValue("@description", this.description);
+            request.Parameters.AddWithValue("@ban", this.banned);
+            request.Parameters.AddWithValue("@ban_time", this.banTime);
+            request.Parameters.AddWithValue("@last_updated", this._lastUpdated);
+            request.Prepare();
+
+            request.ExecuteNonQuery();
+
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
+    public bool DeleteFromDB(MySqlCommand request){
+        try
+        {
+            request.CommandText = "DELETE FROM User WHERE id_user = @id";
+            request.Parameters.AddWithValue("@id", this.id);
+            request.Prepare();
+
+            request.ExecuteNonQuery();
+
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
 }
