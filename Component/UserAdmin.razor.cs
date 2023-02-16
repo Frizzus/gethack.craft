@@ -53,7 +53,7 @@ class UserAdmin : BaseUser,DBObject
         request.CommandText = "SELECT id_user, last_updated FROM Comment WHERE last_updated = (SELECT MAX(last_updated) FROM User WHERE username = @username AND pwd = @password)";
         request.Parameters.AddWithValue("@username", this.username);
         request.Parameters.AddWithValue("@password", this._password);
-
+        request.Prepare();
         MySqlDataReader data = request.ExecuteReader();
         
         this.id = data.GetInt32(0);
@@ -74,6 +74,7 @@ class UserAdmin : BaseUser,DBObject
         request.CommandText = "SELECT * FROM User WHERE username = @username AND pwd = @password";
         request.Parameters.AddWithValue("@username", username);
         request.Parameters.AddWithValue("@password", password);
+        request.Prepare();
         MySqlDataReader reader = request.ExecuteReader();
         
 
@@ -96,6 +97,7 @@ class UserAdmin : BaseUser,DBObject
         request.Parameters.Clear();
         request.CommandText = "SELECT id_hack FROM User u INNER JOIN loved_hack l WHERE u.id_user = l.id_user AND l.id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.hackLoved = new List<Hack>();
@@ -110,6 +112,7 @@ class UserAdmin : BaseUser,DBObject
         request.Parameters.Clear();
         request.CommandText = "SELECT id_hack FROM Hack WHERE id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.hackPosted = new List<Hack>();
@@ -124,6 +127,7 @@ class UserAdmin : BaseUser,DBObject
         request.Parameters.Clear();
         request.CommandText = "SELECT id_hack FROM User u INNER JOIN to_inspect_hack i WHERE u.id_user = i.id_user AND i.id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.hackToInspect = new List<Hack>();
@@ -138,6 +142,7 @@ class UserAdmin : BaseUser,DBObject
         request.Parameters.Clear();
         request.CommandText = "SELECT id_comment FROM Comment WHERE id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.personnalComment = new List<Comment>();
@@ -153,6 +158,7 @@ class UserAdmin : BaseUser,DBObject
 
         request.CommandText = "SELECT * FROM User WHERE user_id = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         MySqlDataReader reader = request.ExecuteReader();
         
 
@@ -180,6 +186,7 @@ class UserAdmin : BaseUser,DBObject
         request.Parameters.Clear();
         request.CommandText = "SELECT id_hack FROM User u INNER JOIN loved_hack l WHERE u.id_user = l.id_user AND l.id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.hackLoved = new List<Hack>();
@@ -194,6 +201,7 @@ class UserAdmin : BaseUser,DBObject
         request.Parameters.Clear();
         request.CommandText = "SELECT id_hack FROM Hack WHERE id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.hackPosted = new List<Hack>();
@@ -208,6 +216,7 @@ class UserAdmin : BaseUser,DBObject
         request.Parameters.Clear();
         request.CommandText = "SELECT id_hack FROM User u INNER JOIN to_inspect_hack i WHERE u.id_user = i.id_user AND i.id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.hackToInspect = new List<Hack>();
@@ -222,6 +231,7 @@ class UserAdmin : BaseUser,DBObject
         request.Parameters.Clear();
         request.CommandText = "SELECT id_comment FROM Comment WHERE id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.personnalComment = new List<Comment>();

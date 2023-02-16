@@ -36,7 +36,7 @@ public class User : BaseUser{
         request.CommandText = "SELECT id_user, last_updated FROM Comment WHERE last_updated = (SELECT MAX(last_updated) FROM User WHERE username = @username AND pwd = @password)";
         request.Parameters.AddWithValue("@username", this.username);
         request.Parameters.AddWithValue("@password", this._password);
-
+        request.Prepare();
         MySqlDataReader data = request.ExecuteReader();
         
         this.id = data.GetInt32(0);
@@ -57,6 +57,7 @@ public class User : BaseUser{
         request.CommandText = "SELECT * FROM User WHERE username = @username AND pwd = @password";
         request.Parameters.AddWithValue("@username", username);
         request.Parameters.AddWithValue("@password", password);
+        request.Prepare();
         MySqlDataReader reader = request.ExecuteReader();
         
 
@@ -79,6 +80,7 @@ public class User : BaseUser{
         request.Parameters.Clear();
         request.CommandText = "SELECT id_hack FROM User u INNER JOIN loved_hack l WHERE u.id_user = l.id_user AND l.id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.hackLoved = new List<Hack>();
@@ -93,6 +95,7 @@ public class User : BaseUser{
         request.Parameters.Clear();
         request.CommandText = "SELECT id_hack FROM Hack WHERE id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.hackPosted = new List<Hack>();
@@ -107,6 +110,7 @@ public class User : BaseUser{
         request.Parameters.Clear();
         request.CommandText = "SELECT id_comment FROM Comment WHERE id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.personnalComment = new List<Comment>();
@@ -122,6 +126,7 @@ public class User : BaseUser{
 
         request.CommandText = "SELECT * FROM User WHERE user_id = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         MySqlDataReader reader = request.ExecuteReader();
         
 
@@ -149,6 +154,7 @@ public class User : BaseUser{
         request.Parameters.Clear();
         request.CommandText = "SELECT id_hack FROM User u INNER JOIN loved_hack l WHERE u.id_user = l.id_user AND l.id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.hackLoved = new List<Hack>();
@@ -163,6 +169,7 @@ public class User : BaseUser{
         request.Parameters.Clear();
         request.CommandText = "SELECT id_hack FROM Hack WHERE id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.hackPosted = new List<Hack>();
@@ -177,6 +184,7 @@ public class User : BaseUser{
         request.Parameters.Clear();
         request.CommandText = "SELECT id_comment FROM Comment WHERE id_user = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         reader = request.ExecuteReader();
 
         this.personnalComment = new List<Comment>();

@@ -3,7 +3,7 @@ using MySql.Data.MySqlClient;
 /// <summary>
 /// A Class representing a getcraft post
 /// </summary>
-public struct Hack{
+public struct Hack : DBObject{
 
     /// <summary>
     /// Constructor method based on value passed as parameter (insert the new hack to the database)
@@ -12,7 +12,7 @@ public struct Hack{
     /// <param name="title">The title of the Hack</param>
     /// <param name="type">The category of the post (build, redstone)</param>
     /// <param name="tags">Some tag to help with searches</param>
-    public Hack(int user, string title, string type, string tags = "", string description = ""){
+    public Hack(int user, string title, string type, MySqlCommand request, string tags = "", string description = ""){
         if (this.title == "default" || this._hackType == "default")
         {
             throw new Exception("title and type have to be specified");
@@ -27,35 +27,27 @@ public struct Hack{
         this.relatedUserId = user;
         this._hackType = type;
 
-        if (!this.ConstructForDB())
+        if (!this.ConstructForDB(request))
         {
             throw new Exception("The insertion of the object in the Database has failed");
         }
         // Get the id and the SQL server current date the DB give with AUTO-INCREMENT and then update the object with it
-
-        IDictionary<string,string> dotEnv = FrizzusUtils.getEnvArray(@"\.env");
-        MySqlConnection connection = new MySqlConnection($"server={dotEnv["DB_HOST"]};userid={dotEnv["DB_USER"]};password={dotEnv["DB_PASSWORD"]};database={dotEnv["DB_DATABASE"]};");
-        connection.Open();
-
-        MySqlCommand request = new MySqlCommand();
-        request.Connection = connection;
             
         // Getting the database id and date based on the most recent date from this.relatedUser
         request.CommandText = "SELECT id_hack, last_updated FROM Hack WHERE last_updated = (SELECT MAX(last_updated) FROM Hack WHERE id_user = @relatedUser)";
         request.Parameters.AddWithValue("@relatedUser", this.relatedUserId);
-
+        request.Prepare();
         MySqlDataReader data = request.ExecuteReader();
         
         this.id = data.GetInt32(0);
         this._lastUpdated = data.GetDateTime(1);
-
-        connection.Close();
     }
 
 
     public Hack(int id, MySqlCommand request){
         request.CommandText = "SELECT * FROM Hack WHERE id_hack = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         MySqlDataReader reader = request.ExecuteReader();
 
         this.id = id;
@@ -93,6 +85,7 @@ public struct Hack{
         // check if the user is an admin or not
         request.CommandText = "SELECT is_admin FROM User WHERE id_user = @id";
         request.Parameters.AddWithValue("@id", this.id);
+        request.Prepare();
         MySqlDataReader reader = request.ExecuteReader(); 
 
         if (reader.GetBoolean("is_admin"))
@@ -131,9 +124,67 @@ public struct Hack{
         }
     }
 
-    public bool ConstructForDB(){return false;}
-    public bool UpdateToDB(){return false;}
-    public bool DeleteFromDB(){return false;}
+    public bool ConstructForDB(MySqlCommand request){
+        try
+        {
+            request.CommandText = "INSERT INTO Hack(title, img_url, description, nb_likes, reported, reason_reported, hack_type, id_user, last_updated, tags) VALUES(@title, @img_url, @description, @nb_likes, @reported, @reason_reported, @hack_type, @id_user, @last_updated, @tags)";
+            request.Parameters.AddWithValue("@title", this.title);
+            request.Parameters.AddWithValue("@img_url", this.imgLink);
+            request.Parameters.AddWithValue("@description", this.description);
+            request.Parameters.AddWithValue("@nb_likes", this.nbLikes);
+            request.Parameters.AddWithValue("@reported", this.reported);
+            request.Parameters.AddWithValue("@reason_reported", this.reasonReported);
+            request.Parameters.AddWithValue("@hack_type", this.HackType);
+            request.Parameters.AddWithValue("@id_user", this.relatedUserId);
+            request.Parameters.AddWithValue("@last_updated", this._lastUpdated);
+            request.Parameters.AddWithValue("@tags", this.Tags);
+            request.Prepare();
+
+            request.ExecuteNonQuery();
+
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
+    public bool UpdateToDB(MySqlCommand request){
+        try
+        {
+            request.CommandText = "INSERT Hack SET nb_likes = @nb_likes, reported = @reported, reason_reported @reason_reported, last_updated = @last_updated";
+            request.Parameters.AddWithValue("@nb_likes", this.nbLikes);
+            request.Parameters.AddWithValue("@reported", this.reported);
+            request.Parameters.AddWithValue("@reason_reported", this.reasonReported);
+            request.Parameters.AddWithValue("@last_updated", this._lastUpdated);
+            request.Parameters.AddWithValue("@tags", this.Tags);
+            request.Prepare();
+
+            request.ExecuteNonQuery();
+
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
+    public bool DeleteFromDB(MySqlCommand request){
+        try
+        {
+            request.CommandText = "DELETE FROM Hack WHERE id_hack = @id";
+            request.Parameters.AddWithValue("@id", this.id);
+            request.Prepare();
+
+            request.ExecuteNonQuery();
+
+            return true;
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
 
 
 }

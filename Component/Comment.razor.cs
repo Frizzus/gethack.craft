@@ -31,7 +31,7 @@ public class Comment : DBObject{
         request.CommandText = "SELECT id_comment, last_updated FROM Comment WHERE last_updated = (SELECT MAX(last_updated) FROM Comment WHERE id_user = @relatedUser AND id_hack = @relatedHack)";
         request.Parameters.AddWithValue("@relatedUser", this.relatedUserId);
         request.Parameters.AddWithValue("@relatedHack", this.relatedHackId);
-
+        request.Prepare();
         MySqlDataReader data = request.ExecuteReader();
         
         this.id = data.GetInt32(0);
@@ -41,6 +41,7 @@ public class Comment : DBObject{
     public Comment(int id, MySqlCommand request){
         request.CommandText = "SELECT * FROM Comment WHERE id_comment = @id";
         request.Parameters.AddWithValue("@id", id);
+        request.Prepare();
         MySqlDataReader reader = request.ExecuteReader();
 
         this.id = id;
