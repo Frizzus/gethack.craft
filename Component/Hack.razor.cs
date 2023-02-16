@@ -12,7 +12,7 @@ public struct Hack{
     /// <param name="title">The title of the Hack</param>
     /// <param name="type">The category of the post (build, redstone)</param>
     /// <param name="tags">Some tag to help with searches</param>
-    public Hack(BaseUser user, string title, string type, string tags = "", string description = ""){
+    public Hack(int user, string title, string type, string tags = "", string description = ""){
         if (this.title == "default" || this._hackType == "default")
         {
             throw new Exception("title and type have to be specified");
@@ -24,7 +24,7 @@ public struct Hack{
         this.nbLikes = 0;
         this.reported = false;
         this.reasonReported = null;
-        this.relatedUser = user;
+        this.relatedUserId = user;
         this._hackType = type;
 
         if (!this.ConstructForDB())
@@ -42,7 +42,7 @@ public struct Hack{
             
         // Getting the database id and date based on the most recent date from this.relatedUser
         request.CommandText = "SELECT id_hack, last_updated FROM Hack WHERE last_updated = (SELECT MAX(last_updated) FROM Hack WHERE id_user = @relatedUser)";
-        request.Parameters.AddWithValue("@relatedUser", this.relatedUser);
+        request.Parameters.AddWithValue("@relatedUser", this.relatedUserId);
 
         MySqlDataReader data = request.ExecuteReader();
         
@@ -52,32 +52,23 @@ public struct Hack{
         connection.Close();
     }
 
-    /// <summary>
-    /// A detailed Constructor for fetching a record of the Hack table and turn him in object without re-inserting an new record
-    /// </summary>
-    /// <param name="id">Id of the record fetched</param>
-    /// <param name="title">Title of the post</param>
-    /// <param name="tags">Tags to help with searches</param>
-    /// <param name="imgLink">Link to the image of the hack</param>
-    /// <param name="description">Content of the post</param>
-    /// <param name="nbLikes">Number of time the users have liked the post</param>
-    /// <param name="reported">Is this hack has been reported by a user</param>
-    /// <param name="reasonReported">If the post has been reported => reason why the hack need to be judge by an admin</param>
-    /// <param name="relatedUser">The user who own the post</param>
-    /// <param name="hackType">The category of the post (build, redstone)</param>
-    /// <param name="lastUpdated">The last time this hack has been updated</param>
-    public Hack(int id, string title, string tags, string imgLink, string description, int nbLikes, bool reported, string reasonReported, BaseUser relatedUser, string hackType, DateTime lastUpdated){
+
+    public Hack(int id, MySqlCommand request){
+        request.CommandText = "SELECT * FROM Hack WHERE id_hack = @id";
+        request.Parameters.AddWithValue("@id", id);
+        MySqlDataReader reader = request.ExecuteReader();
+
         this.id = id;
-        this.title = title;
-        this.Tags = tags;
-        this.imgLink = imgLink;
-        this.description = description;
-        this.nbLikes = nbLikes;
-        this.reported = reported;
-        this.reasonReported = reasonReported;
-        this.relatedUser = relatedUser;
-        this._hackType = hackType;
-        this._lastUpdated = lastUpdated;
+        this.title = reader.GetString("title");
+        this.Tags = reader.GetString("tags");
+        this.imgLink = reader.GetString("img_url");
+        this.description = reader.GetString("description");
+        this.nbLikes = reader.GetInt32("nb_likes");
+        this.reported = reader.GetBoolean("reported");
+        this.reasonReported = reader.GetString("reason_reported");
+        this._hackType = reader.GetString("hack_type");
+        this._lastUpdated = reader.GetDateTime("last_updated");
+        this.relatedUserId = reader.GetInt32("id_user");
     }
 
     
@@ -89,10 +80,30 @@ public struct Hack{
     public int nbLikes;
     public bool reported;
     public string? reasonReported;
-    public BaseUser relatedUser;
     private string _hackType;
     private DateTime _lastUpdated;
+    private int relatedUserId;
 
+
+    /// <summary>
+    /// Property used to get the relatedUser without the need to get the whole database by recursion
+    /// </summary>
+    /// <value></value>
+    public BaseUser RelatedUser(MySqlCommand request) {
+        // check if the user is an admin or not
+        request.CommandText = "SELECT is_admin FROM User WHERE id_user = @id";
+        request.Parameters.AddWithValue("@id", this.id);
+        MySqlDataReader reader = request.ExecuteReader(); 
+
+        if (reader.GetBoolean("is_admin"))
+        {
+            return new UserAdmin(this.relatedUserId, request);
+        }
+        else
+        {
+            return new User(this.relatedUserId, request);
+        }
+    }
 
     public DateTime LastUpdated {get;}
     public string Tags {

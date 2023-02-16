@@ -2,16 +2,23 @@ using MySql.Data.MySqlClient;
 
 public class Comment : DBObject{
 
+    public int id;
+    public String content;
+    public int nbLikes = 0;
+    public int relatedUserId;
+    public int relatedHackId;
+    private DateTime _lastUpdated;
+
     /// <summary>
     /// Constructor to create a new comment, it will automatically update the database
     /// </summary>
     /// <param name="user">The user who pubished this comment</param>
     /// <param name="hack">The post where the comment has been published</param>
     /// <param name="content">The content of the comment</param>
-    public Comment(BaseUser user, Hack hack, string content){
+    public Comment(int user, int hack, string content){
 
-        this.relatedUser = user;
-        this.relatedHack = hack;
+        this.relatedUserId = user;
+        this.relatedHackId = hack;
         this.content = content;
 
         if (!this.ConstructForDB())
@@ -29,8 +36,8 @@ public class Comment : DBObject{
             
         // Getting the database id and date based on the most recent date from this.relatedUser
         request.CommandText = "SELECT id_comment, last_updated FROM Comment WHERE last_updated = (SELECT MAX(last_updated) FROM Comment WHERE id_user = @relatedUser AND id_hack = @relatedHack)";
-        request.Parameters.AddWithValue("@relatedUser", this.relatedUser);
-        request.Parameters.AddWithValue("@relatedHack", this.relatedHack);
+        request.Parameters.AddWithValue("@relatedUser", this.relatedUserId);
+        request.Parameters.AddWithValue("@relatedHack", this.relatedHackId);
 
         MySqlDataReader data = request.ExecuteReader();
         
@@ -40,30 +47,18 @@ public class Comment : DBObject{
         connection.Close();
     }
 
-    /// <summary>
-    /// A detailed constructor for fetching data from the database
-    /// </summary>
-    /// <param name="id">Database id form the Comment Table</param>
-    /// <param name="content">Content of the comment</param>
-    /// <param name="nbLikes">Number of like of the comment</param>
-    /// <param name="user">The user who post</param>
-    /// <param name="hack">The post where the comment has been posted</param>
-    /// <param name="lastUpdated">The last time the comment has been updated</param>
-    public Comment(int id, string content, int nbLikes, BaseUser user, Hack hack, DateTime lastUpdated){
-        this.id = id;
-        this.content = content;
-        this.nbLikes = nbLikes;
-        this.relatedUser = user;
-        this.relatedHack = hack;
-        this._lastUpdated = lastUpdated;
-    }
+    public Comment(int id, MySqlCommand request){
+        request.CommandText = "SELECT * FROM Comment WHERE id_comment = @id";
+        request.Parameters.AddWithValue("@id", id);
+        MySqlDataReader reader = request.ExecuteReader();
 
-    public int id;
-    public String content;
-    public int nbLikes = 0;
-    public BaseUser relatedUser;
-    public Hack relatedHack;
-    private DateTime _lastUpdated;
+        this.id = id;
+        this.content = reader.GetString("content");
+        this.nbLikes = reader.GetInt32("nb_likes");
+        this.relatedUserId = reader.GetInt32("id_user");
+        this.relatedHackId = reader.GetInt32("id_hack");
+        this._lastUpdated = reader.GetDateTime("last_updated");
+    }
 
 
     public DateTime LastUpdated {get;}
@@ -137,8 +132,8 @@ public class Comment : DBObject{
             request.CommandText = "INSERT INTO Comment(content, nb_likes, id_hack, id_user) VALUES(@content, @nbLikes, @relatedHack, @relatedUser)";
             request.Parameters.AddWithValue("@content", this.content);
             request.Parameters.AddWithValue("@nbLikes", this.nbLikes);
-            request.Parameters.AddWithValue("@relatedHack", this.relatedHack);
-            request.Parameters.AddWithValue("@relatedUser", this.relatedUser);
+            request.Parameters.AddWithValue("@relatedHack", this.relatedHackId);
+            request.Parameters.AddWithValue("@relatedUser", this.relatedUserId);
             request.Prepare();
 
             request.ExecuteNonQuery();

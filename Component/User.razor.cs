@@ -18,6 +18,175 @@ public class User : BaseUser{
         this.hackLoved = new List<Hack>();
         this.hackPosted = new List<Hack>();
         this.personnalComment = new List<Comment>();
+
+        if (!this.ConstructForDB())
+        {
+            throw new Exception("The insertion of the object in the Database has failed");
+        }
+        // Get the id and the SQL server current date the DB give with AUTO-INCREMENT and then update the object with it
+
+        IDictionary<string,string> dotEnv = FrizzusUtils.getEnvArray(@"\.env");
+        MySqlConnection connection = new MySqlConnection($"server={dotEnv["DB_HOST"]};userid={dotEnv["DB_USER"]};password={dotEnv["DB_PASSWORD"]};database={dotEnv["DB_DATABASE"]};");
+        connection.Open();
+
+        MySqlCommand request = new MySqlCommand();
+        request.Connection = connection;
+            
+        // Getting the database id and date based on the most recent date from this.username
+        request.CommandText = "SELECT id_user, last_updated FROM Comment WHERE last_updated = (SELECT MAX(last_updated) FROM User WHERE username = @username AND pwd = @password)";
+        request.Parameters.AddWithValue("@username", this.username);
+        request.Parameters.AddWithValue("@password", this._password);
+
+        MySqlDataReader data = request.ExecuteReader();
+        
+        this.id = data.GetInt32(0);
+        this._lastUpdated = data.GetDateTime(1);
+
+        connection.Close();
+    }
+
+    public User(string username, string password, MySqlCommand request){
+        if (password == "")
+        {
+            throw new Exception("you have to insert a password");
+        }
+
+        this.username = username;
+        this._password = password;
+
+        request.CommandText = "SELECT * FROM User WHERE username = @username AND pwd = @password";
+        request.Parameters.AddWithValue("@username", username);
+        request.Parameters.AddWithValue("@password", password);
+        MySqlDataReader reader = request.ExecuteReader();
+        
+
+
+        this.id = reader.GetInt32("user_id");
+        this._email = reader.GetString("email");
+        this.profilePicture = reader.GetString("profile_picture");
+        this.description = reader.GetString("description");
+        this.banned = reader.GetBoolean("ban");
+        this.banTime = reader.GetDateTime("ban_time");
+        this._lastUpdated = reader.GetDateTime("last_updated");
+
+
+        if (username == "")
+        {
+            this.username = this._email;
+        }
+
+        // Load Loved hack
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_hack FROM User u INNER JOIN loved_hack l WHERE u.id_user = l.id_user AND l.id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.hackLoved = new List<Hack>();
+
+        while (reader.Read())
+        {
+            this.hackLoved.Add(new Hack(reader.GetInt32("id_hack"), request));
+        }
+
+        // Load own hack
+
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_hack FROM Hack WHERE id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.hackPosted = new List<Hack>();
+
+        while (reader.Read())
+        {
+            this.hackPosted.Add(new Hack(reader.GetInt32("id_hack"), request));
+        }
+
+        // Load Comments
+
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_comment FROM Comment WHERE id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.personnalComment = new List<Comment>();
+
+        while (reader.Read())
+        {
+            this.personnalComment.Add(new Comment(reader.GetInt32("id_hack"), request));
+        }
+    }
+
+    public User(int id, MySqlCommand request){
+        
+
+        request.CommandText = "SELECT * FROM User WHERE user_id = @id";
+        request.Parameters.AddWithValue("@id", id);
+        MySqlDataReader reader = request.ExecuteReader();
+        
+
+        this.username = reader.GetString("username");
+        this._password = reader.GetString("pwd");
+        this.id = reader.GetInt32("user_id");
+        this._email = reader.GetString("email");
+        this.profilePicture = reader.GetString("profile_picture");
+        this.description = reader.GetString("description");
+        this.banned = reader.GetBoolean("ban");
+        this.banTime = reader.GetDateTime("ban_time");
+        this._lastUpdated = reader.GetDateTime("last_updated");
+
+
+    if (this._password == "")
+        {
+            throw new Exception("you have to insert a password");
+        }
+    if (username == "")
+        {
+            this.username = this._email;
+        }
+
+        // Load Loved hack
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_hack FROM User u INNER JOIN loved_hack l WHERE u.id_user = l.id_user AND l.id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.hackLoved = new List<Hack>();
+
+        while (reader.Read())
+        {
+            this.hackLoved.Add(new Hack(reader.GetInt32("id_hack"), request));
+        }
+
+        // Load own hack
+
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_hack FROM Hack WHERE id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.hackPosted = new List<Hack>();
+
+        while (reader.Read())
+        {
+            this.hackPosted.Add(new Hack(reader.GetInt32("id_hack"), request));
+        }
+
+        // Load Comments
+
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_comment FROM Comment WHERE id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.personnalComment = new List<Comment>();
+
+        while (reader.Read())
+        {
+            this.personnalComment.Add(new Comment(reader.GetInt32("id_hack"), request));
+        }
+
+
     }
 
 
@@ -25,10 +194,10 @@ public class User : BaseUser{
     public string username;
     public string _password = "";
     private string _email = "";
-    private string? _profilePicture;
+    private string? profilePicture;
     public string? description;
     public bool? banned;
-    private DateTime? _banTime;
+    private DateTime? banTime;
     public List<Hack> hackLoved;
     public List<Hack> hackPosted;
     public List<Comment> personnalComment;
@@ -88,12 +257,6 @@ public class User : BaseUser{
             */
             this._email = value;
         }
-    }
-    public string? BanTime{
-        get;set;
-    }
-    private string? ProfilePicture{
-        get;set;
     }
 
     private string Password{

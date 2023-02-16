@@ -3,6 +3,20 @@ using MySql.Data.MySqlClient;
 class UserAdmin : BaseUser,DBObject
 {
 
+    public int id;
+    public string username;
+    public string _password = "";
+    private string _email = "";
+    private string? profilePicture = "placeholder.svg";
+    public string? description;
+    public bool? banned;
+    public DateTime? banTime;
+    public List<Hack> hackLoved;
+    public List<Hack> hackPosted;
+    public List<Hack> hackToInspect;
+    public List<Comment> personnalComment;
+    private DateTime _lastUpdated;
+
     public UserAdmin(string password, string email, string username = ""){
         
         if (password == "")
@@ -48,72 +62,177 @@ class UserAdmin : BaseUser,DBObject
         connection.Close();
     }
 
-    public UserAdmin(int id, string username, string password, string email, string profilePicture, string description, bool banned, DateTime banTime, DateTime lastUpdated){
+    public UserAdmin(string username, string password, MySqlCommand request){
         if (password == "")
         {
             throw new Exception("you have to insert a password");
         }
-        if (username == "")
-        {
-            this.username = email;
-        }
 
-        this.id = id;
         this.username = username;
         this._password = password;
-        this._email = email;
-        this.profilePicture = profilePicture;
-        this.description = description;
-        this.banned = banned;
-        this.banTime = banTime;
-        this._lastUpdated = lastUpdated;
 
-        // fetching hacks and comments
-
-        IDictionary<string,string> dotEnv = FrizzusUtils.getEnvArray(@"\.env");
-        MySqlConnection connection = new MySqlConnection($"server={dotEnv["DB_HOST"]};userid={dotEnv["DB_USER"]};password={dotEnv["DB_PASSWORD"]};database={dotEnv["DB_DATABASE"]};");
-        connection.Open();
-
-        MySqlCommand request = new MySqlCommand();
-        request.Connection = connection;
-
-        // Fetching loved hacks
-        request.CommandText = "SELECT u.id_user, h.id_hack, h.title, h.img_url, h.description, h.nb_likes, h.reported, h.reason_reported, h.hack_type, h.last_updated, h.tags FROM user u INNER JOIN loved_hack l ON l.id_user = u.id_user INNER JOIN hack h ON l.id_hack = h.id_hack";
+        request.CommandText = "SELECT * FROM User WHERE username = @username AND pwd = @password";
+        request.Parameters.AddWithValue("@username", username);
+        request.Parameters.AddWithValue("@password", password);
         MySqlDataReader reader = request.ExecuteReader();
+        
+
+
+        this.id = reader.GetInt32("user_id");
+        this._email = reader.GetString("email");
+        this.profilePicture = reader.GetString("profile_picture");
+        this.description = reader.GetString("description");
+        this.banned = reader.GetBoolean("ban");
+        this.banTime = reader.GetDateTime("ban_time");
+        this._lastUpdated = reader.GetDateTime("last_updated");
+
+
+        if (username == "")
+        {
+            this.username = this._email;
+        }
+
+        // Load Loved hack
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_hack FROM User u INNER JOIN loved_hack l WHERE u.id_user = l.id_user AND l.id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.hackLoved = new List<Hack>();
 
         while (reader.Read())
         {
-            // Add a VARCHAR tag attribute to Hack tab
-            // NEED TO REWORK THE WAY OF GETTING OTHER OBJECT (CURRENT NON LISIBLE)
-            // IDEA : MAKING A USER CONSTRUCT WITH ONLY ID AND WITH THE ID GET ALL THE ATTRIBUTES
-            // REQUEST IDEA : REPLACE THE INNER JOIN WITH A id_user = (SELECT...) 
-            this.hackLoved.Append<Hack>(new Hack(id: reader.GetInt32("id_hack"), 
-            relatedUser: reader.GetInt32("id_user"),
-            title: reader.GetString("title"),
-            tags: reader.GetString("tags"),
-            imgLink: reader.GetString("img_url"),
-            description: reader.GetString("description"),
-            nbLikes: reader.GetInt32("nb_likes"),
-            reported: reader.GetBoolean("reported"),
-            reasonReported: reader.GetString("reason_reported"),
-            hackType: reader.GetString("hack_type"),
-            lastUpdated: reader.GetDateTime("last_updated")));
+            this.hackLoved.Add(new Hack(reader.GetInt32("id_hack"), request));
+        }
+
+        // Load own hack
+
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_hack FROM Hack WHERE id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.hackPosted = new List<Hack>();
+
+        while (reader.Read())
+        {
+            this.hackPosted.Add(new Hack(reader.GetInt32("id_hack"), request));
+        }
+
+        // Load toInspectHack
+
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_hack FROM User u INNER JOIN to_inspect_hack i WHERE u.id_user = i.id_user AND i.id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.hackToInspect = new List<Hack>();
+
+        while (reader.Read())
+        {
+            this.hackToInspect.Add(new Hack(reader.GetInt32("id_hack"), request));
+        }
+
+        // Load Comments
+
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_comment FROM Comment WHERE id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.personnalComment = new List<Comment>();
+
+        while (reader.Read())
+        {
+            this.personnalComment.Add(new Comment(reader.GetInt32("id_hack"), request));
         }
     }
 
-    public int id;
-    public string username;
-    public string _password = "";
-    private string _email = "";
-    private string? profilePicture = "placeholder.svg";
-    public string? description;
-    public bool? banned;
-    public DateTime? banTime;
-    public List<Hack> hackLoved;
-    public List<Hack> hackPosted;
-    public List<Hack> hackToInspect;
-    public List<Comment> personnalComment;
-    private DateTime _lastUpdated;
+    public UserAdmin(int id, MySqlCommand request){
+        
+
+        request.CommandText = "SELECT * FROM User WHERE user_id = @id";
+        request.Parameters.AddWithValue("@id", id);
+        MySqlDataReader reader = request.ExecuteReader();
+        
+
+        this.username = reader.GetString("username");
+        this._password = reader.GetString("pwd");
+        this.id = reader.GetInt32("user_id");
+        this._email = reader.GetString("email");
+        this.profilePicture = reader.GetString("profile_picture");
+        this.description = reader.GetString("description");
+        this.banned = reader.GetBoolean("ban");
+        this.banTime = reader.GetDateTime("ban_time");
+        this._lastUpdated = reader.GetDateTime("last_updated");
+
+
+    if (this._password == "")
+        {
+            throw new Exception("you have to insert a password");
+        }
+    if (username == "")
+        {
+            this.username = this._email;
+        }
+
+        // Load Loved hack
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_hack FROM User u INNER JOIN loved_hack l WHERE u.id_user = l.id_user AND l.id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.hackLoved = new List<Hack>();
+
+        while (reader.Read())
+        {
+            this.hackLoved.Add(new Hack(reader.GetInt32("id_hack"), request));
+        }
+
+        // Load own hack
+
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_hack FROM Hack WHERE id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.hackPosted = new List<Hack>();
+
+        while (reader.Read())
+        {
+            this.hackPosted.Add(new Hack(reader.GetInt32("id_hack"), request));
+        }
+
+        // Load toInspectHack
+
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_hack FROM User u INNER JOIN to_inspect_hack i WHERE u.id_user = i.id_user AND i.id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.hackToInspect = new List<Hack>();
+
+        while (reader.Read())
+        {
+            this.hackToInspect.Add(new Hack(reader.GetInt32("id_hack"), request));
+        }
+
+        // Load Comments
+
+        request.Parameters.Clear();
+        request.CommandText = "SELECT id_comment FROM Comment WHERE id_user = @id";
+        request.Parameters.AddWithValue("@id", id);
+        reader = request.ExecuteReader();
+
+        this.personnalComment = new List<Comment>();
+
+        while (reader.Read())
+        {
+            this.personnalComment.Add(new Comment(reader.GetInt32("id_hack"), request));
+        }
+
+
+    }
 
 
 
@@ -209,7 +328,7 @@ class UserAdmin : BaseUser,DBObject
     public Hack PostHack(String title, String tags, String description, string category){
         // Upload the Hack to the BD
 
-        Hack h = new Hack(this, title: title, type: category, tags: tags, description: description);
+        Hack h = new Hack(this.id, title: title, type: category, tags: tags, description: description);
 
         this.hackPosted.Add(h);
 
