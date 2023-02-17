@@ -1,7 +1,7 @@
 using MySql.Data.MySqlClient;
 public class User : BaseUser, DBObject{
 
-    public User(string password, string email, string username = ""){
+    public User(string password, string email, MySqlCommand request, string username = ""){
         
         if (password == "")
         {
@@ -19,18 +19,11 @@ public class User : BaseUser, DBObject{
         this.hackPosted = new List<Hack>();
         this.personnalComment = new List<Comment>();
 
-        if (!this.ConstructForDB())
+        if (!this.ConstructForDB(request))
         {
             throw new Exception("The insertion of the object in the Database has failed");
         }
         // Get the id and the SQL server current date the DB give with AUTO-INCREMENT and then update the object with it
-
-        IDictionary<string,string> dotEnv = FrizzusUtils.getEnvArray(@"\.env");
-        MySqlConnection connection = new MySqlConnection($"server={dotEnv["DB_HOST"]};userid={dotEnv["DB_USER"]};password={dotEnv["DB_PASSWORD"]};database={dotEnv["DB_DATABASE"]};");
-        connection.Open();
-
-        MySqlCommand request = new MySqlCommand();
-        request.Connection = connection;
             
         // Getting the database id and date based on the most recent date from this.username
         request.CommandText = "SELECT id_user, last_updated FROM Comment WHERE last_updated = (SELECT MAX(last_updated) FROM User WHERE username = @username AND pwd = @password)";
@@ -41,8 +34,6 @@ public class User : BaseUser, DBObject{
         
         this.id = data.GetInt32(0);
         this._lastUpdated = data.GetDateTime(1);
-
-        connection.Close();
     }
 
     public User(string username, string password, MySqlCommand request){
@@ -292,54 +283,67 @@ public class User : BaseUser, DBObject{
     // Methods
 
 
-    public Comment postComment(Hack post, string description = ""){
+    public Comment postComment(int postId, MySqlCommand request, string description = ""){
         // Post the comment to the DB
-        // Create the record in the DB
-        // Link it to the user
-        // Link it to the hack
-        Comment comment = new Comment(this, post,description);
+        Comment comment = new Comment(this.id, postId, description, request);
         this.personnalComment.Add(comment);
+        this.UpdateToDB(request);
         return comment;
-
     }
 
-    public Hack PostHack(String title, String tags, String description, string category){
+    public Hack PostHack(String title, String tags, String description, string category, MySqlCommand request){
         // Upload the Hack to the BD
-
-        Hack h = new Hack(this, title: title, type: category, tags: tags, description: description);
+        Hack h = new Hack(this.id, title: title, type: category, tags: tags, description: description, request: request);
         this.hackPosted.Add(h);
-
+        this.UpdateToDB(request);
         return h;
     }
 
-    public void setFavorite(Hack post){
+    public void setFavorite(Hack post, MySqlCommand request){
         this.hackLoved.Add(post);
-
         // set the hack to loved in the DB
+        request.Parameters.Clear();
+        request.CommandText = "INSERT INTO loved_hack(id_hack, id_user) VALUES(@id_hack, @id_user)";
+        request.Parameters.AddWithValue("@id_hack", post.id);
+        request.Parameters.AddWithValue("@id_user", this.id);
+        request.Prepare();
+        request.ExecuteNonQuery();
     }
 
-    public void unsetFavorite(Hack post){
-        // delete the record in the DB
-
+    public void unsetFavorite(Hack post, MySqlCommand request){
         int indexToSupr = this.hackLoved.FindIndex(0, x => (x.id == post.id));
-
         this.hackLoved.RemoveAt(indexToSupr);
+        // delete the record in the DB
+        request.Parameters.Clear();
+        request.CommandText = "DELETE FROM loved_hack WHERE id_hack = @id_hack AND id_user = @id_user";
+        request.Parameters.AddWithValue("@id_hack", post.id);
+        request.Parameters.AddWithValue("@id_user", this.id);
+        request.Prepare();
+        request.ExecuteNonQuery();
     }
 
-    public void deleteOwn(Hack post){
-        // delete the record in the DB
-
+    public void deleteOwn(Hack post, MySqlCommand request){
         int indexToSupr = this.hackPosted.FindIndex(0, x => (x.id == post.id));
-
         this.hackPosted.RemoveAt(indexToSupr);
+        // delete the record in the DB
+        request.Parameters.Clear();
+        request.CommandText = "DELETE FROM Hack WHERE id_hack = @id_hack AND id_user = @id_user";
+        request.Parameters.AddWithValue("@id_hack", post.id);
+        request.Parameters.AddWithValue("@id_user", this.id);
+        request.Prepare();
+        request.ExecuteNonQuery();
     }
 
-    public void deleteOwn(Comment comment){
-        // delete the record in the DB
-
+    public void deleteOwn(Comment comment, MySqlCommand request){
         int indexToSupr = this.personnalComment.FindIndex(0, x => (x.id == comment.id));
-
         this.personnalComment.RemoveAt(indexToSupr);
+        // delete the record in the DB
+        request.Parameters.Clear();
+        request.CommandText = "DELETE FROM Comment WHERE id_comment = @id_comment AND id_user = @id_user";
+        request.Parameters.AddWithValue("@id_comment", comment.id);
+        request.Parameters.AddWithValue("@id_user", this.id);
+        request.Prepare();
+        request.ExecuteNonQuery();
     }
 
     public bool ConstructForDB(MySqlCommand request){
