@@ -335,50 +335,76 @@ class UserAdmin : BaseUser,DBObject
         return h;
     }
 
-    public void setFavorite(Hack post){
+    public void setFavorite(Hack post, MySqlCommand request){
         this.hackLoved.Add(post);
-
         // set the hack to loved in the DB
+        request.Parameters.Clear();
+        request.CommandText = "INSERT INTO loved_hack(id_hack, id_user) VALUES(@id_hack, @id_user)";
+        request.Parameters.AddWithValue("@id_hack", post.id);
+        request.Parameters.AddWithValue("@id_user", this.id);
+        request.Prepare();
+        request.ExecuteNonQuery();
     }
 
-    public void unsetFavorite(Hack post){
-        // delete the record in the DB
-
+    public void unsetFavorite(Hack post, MySqlCommand request){
         int indexToSupr = this.hackLoved.FindIndex(0, x => (x.id == post.id));
-
         this.hackLoved.RemoveAt(indexToSupr);
+        // delete the record in the DB
+        request.Parameters.Clear();
+        request.CommandText = "DELETE FROM loved_hack WHERE id_hack = @id_hack AND id_user = @id_user";
+        request.Parameters.AddWithValue("@id_hack", post.id);
+        request.Parameters.AddWithValue("@id_user", this.id);
+        request.Prepare();
+        request.ExecuteNonQuery();
     }
 
-    public void deleteOwn(Hack post){
-        // delete the record in the DB
-
+    public void deleteOwn(Hack post, MySqlCommand request){
         int indexToSupr = this.hackPosted.FindIndex(0, x => (x.id == post.id));
-
         this.hackPosted.RemoveAt(indexToSupr);
-    }
-
-    public void deleteOwn(Comment comment){
         // delete the record in the DB
-
-        int indexToSupr = this.personnalComment.FindIndex(0, x => (x.id == comment.id));
-
-        this.personnalComment.RemoveAt(indexToSupr);
+        request.Parameters.Clear();
+        request.CommandText = "DELETE FROM Hack WHERE id_hack = @id_hack AND id_user = @id_user";
+        request.Parameters.AddWithValue("@id_hack", post.id);
+        request.Parameters.AddWithValue("@id_user", this.id);
+        request.Prepare();
+        request.ExecuteNonQuery();
     }
+
+    public void deleteOwn(Comment comment, MySqlCommand request){
+        int indexToSupr = this.personnalComment.FindIndex(0, x => (x.id == comment.id));
+        this.personnalComment.RemoveAt(indexToSupr);
+        // delete the record in the DB
+        request.Parameters.Clear();
+        request.CommandText = "DELETE FROM Comment WHERE id_comment = @id_comment AND id_user = @id_user";
+        request.Parameters.AddWithValue("@id_comment", comment.id);
+        request.Parameters.AddWithValue("@id_user", this.id);
+        request.Prepare();
+        request.ExecuteNonQuery();
+    }
+    
 
     /// <summary>
     /// An admin method to delete any comment safely
     /// </summary>
     /// <param name="comment">The comment targeted to be deleted</param>
-    public void adminDelete(Comment comment){
-        comment.relatedUser.deleteOwn(comment);
+    public void adminDelete(Comment comment, MySqlCommand request){
+        request.Parameters.Clear();
+        request.CommandText = "DELETE FROM Comment WHERE id_comment = @id_comment";
+        request.Parameters.AddWithValue("@id_comment", comment.id);
+        request.Prepare();
+        request.ExecuteNonQuery();
     }
 
     /// <summary>
     /// An admin method to delete any hack safely 
     /// </summary>
     /// <param name="post">The post targeted to be deleted</param>
-    public void adminDelete(Hack post){
-        post.relatedUser.deleteOwn(post);
+    public void adminDelete(Hack post, MySqlCommand request){
+        request.Parameters.Clear();
+        request.CommandText = "DELETE FROM Hack WHERE id_hack = @id_hack";
+        request.Parameters.AddWithValue("@id_hack", post.id);
+        request.Prepare();
+        request.ExecuteNonQuery();
     }
 
     /// <summary>
@@ -386,11 +412,11 @@ class UserAdmin : BaseUser,DBObject
     /// </summary>
     /// <param name="user">The future banned user</param>
     /// <param name="untilDate">The Date until the user will be banned</param>
-    public void adminBan(User user, string untilDate){
-        //Update in DB
-
+    public void adminBan(User user, DateTime untilDate, MySqlCommand request){
         user.banned = true;
         user.banTime = untilDate;
+        //Update in DB
+        user.UpdateToDB(request);
     }
 
     public bool ConstructForDB(MySqlCommand request){

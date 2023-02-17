@@ -205,7 +205,7 @@ public class User : BaseUser, DBObject{
     private string? profilePicture;
     public string? description;
     public bool? banned;
-    private DateTime? banTime;
+    public DateTime? banTime;
     public List<Hack> hackLoved;
     public List<Hack> hackPosted;
     public List<Comment> personnalComment;

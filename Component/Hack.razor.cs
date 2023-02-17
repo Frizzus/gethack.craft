@@ -172,7 +172,7 @@ public struct Hack : DBObject{
     public bool DeleteFromDB(MySqlCommand request){
         try
         {
-            request.CommandText = "DELETE FROM Hack WHERE id_hack = @id";
+            request.CommandText = "DELETE  FROM Hack WHERE id_hack = @id";
             request.Parameters.AddWithValue("@id", this.id);
             request.Prepare();
 
