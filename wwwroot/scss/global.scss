@@ -1,4 +1,4 @@
-.build {
+/*.build {
     --primary: darkgreen;
     --primary-hover: green;
     --primary-focus: lightgreen;
@@ -20,4 +20,11 @@
     --primary: dodgerblue;
     --primary-hover: deepskyblue;
     --primary-focus: aqua;
+}*/
+
+body{
+    margin: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--cloud);
 }

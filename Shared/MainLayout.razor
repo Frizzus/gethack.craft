@@ -3,27 +3,21 @@
 
 
 <span class="@globalClass">
-    <nav id="mainNav">
+    <nav id="mainNav" tabindex="1">
+        <div></div>
         <section>
-            <a href="#" @onclick="setBuild">
-                <div data-nav="BuildHack"><img src="placeholder.svg" alt="blazorIcon"></div>
-            </a>
-            <a href="#" @onclick="setRedstone">
-                <div data-nav="RedHack"><img src="placeholder.svg" alt="blazorIcon"></div>
-            </a>
-            <a href="#" @onclick="setLite">
-                <div data-nav="LiteHack"><img src="placeholder.svg" alt="blazorIcon"></div>
-            </a>
+            <article>
+                <a href="#" class="profilePicture"><img src="placeholder.svg" alt="profile picture"></a>
+                <h2>Connect</h2>
+            </article>
+            <form action="" method="post">
+                <button>To Redstone</button>
+                <input type="text" name="" id="">
+                <button type="submit">Submit</button>
+            </form>
         </section>
-        <section>
-            <a href="#" @onclick="setProfile">
-                <div data-nav="Profil"><img src="placeholder.svg" alt="blazorIcon"></div>
-            </a>
-        </section>
+        <div></div>
     </nav>
-    <h2 style="padding-top: 200px;">@data</h2>
-    @Body
-    <footer @onclick="testA">@bdData</footer>
 </span>
 
 @code {
