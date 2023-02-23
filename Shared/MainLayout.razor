@@ -1,77 +1,50 @@
 ﻿@inherits LayoutComponentBase
 @using MySql.Data.MySqlClient;
 
-
-<span class="@globalClass">
     <nav id="mainNav" tabindex="1">
         <div></div>
         <section>
-            <article>
-                <a href="#" class="profilePicture"><img src="placeholder.svg" alt="profile picture"></a>
-                <h2>Connect</h2>
-            </article>
-            <form action="" method="post">
-                <button>To Redstone</button>
-                <input type="text" name="" id="">
-                <button type="submit">Submit</button>
-            </form>
+            @if (isProfilePage())
+            {
+                <div id="profileNav">
+                    <ul>
+                        <li>profile</li>
+                        <li>loved</li>
+                        <li>own</li>
+                    </ul>
+                    <div>
+                        <a href=""><img src="placeholder.svg" alt=""></a>
+                        <button></button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div id="accueilNav">
+                    <article>
+                        <a href="#" class="profilePicture"><img src="placeholder.svg" alt="profile picture"></a>
+                        <h3>Connection</h3>
+                    </article>
+                    <form action="" method="post">
+                        <button>To Redstone</button>
+                        <input type="text" name="" id="">
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            }
         </section>
         <div></div>
     </nav>
-</span>
 
 @code {
+    [Inject]
+    public NavigationManager? Nav {get;set;}
 
-    private string? bdData = "";
-    private int data = 0;
-
-    private string? globalClass {get;set;} = "build";
-    public void setBuild(){
-        globalClass = "build";
-        data++;
-    }
-
-    public void setRedstone(){
-        globalClass = "redstone";
-        data++;
-    }
-
-    public void setLite(){
-        globalClass = "lite";
-        data--;
-    }
-
-    public void setProfile(){
-        globalClass = "profileColor";
-        data++;
-    }
-
-    public void testA(){
-        
-        IDictionary<string,string> dotEnv = FrizzusUtils.getEnvArray(@"\.env");
-
-        string cs = $"server={dotEnv["DB_HOST"]};userid={dotEnv["DB_USER"]};password={dotEnv["DB_PASSWORD"]};database={dotEnv["DB_DATABASE"]}";
-        using var con = new MySqlConnection(cs);
-        con.Open();
-
-        var stm = "SELECT * FROM Hack";
-        var cmd = new MySqlCommand(stm, con);
-
-        MySqlDataReader reader = cmd.ExecuteReader();
-
-        while (reader.Read())
+    public bool isProfilePage(){
+        if (Nav is null)
         {
-
-            bdData = bdData + reader.GetInt32(0).ToString();
-            bdData = bdData + reader.GetString(1).ToString();
-            bdData = bdData + reader.GetString(2).ToString();
-            bdData = bdData + reader.GetString(3).ToString();
-            bdData = bdData + reader.GetInt32(4).ToString();
-            bdData = bdData + reader.GetBoolean(5).ToString();
-            bdData = bdData + reader.GetString(5).ToString();
-            
+            return false;
         }
-
-        
+        return Nav.Uri.Contains("profile");
     }
 }
