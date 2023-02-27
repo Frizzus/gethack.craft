@@ -2418,6 +2418,10 @@ h1 {
   text-align: center;
 }
 
+.hack {
+  background-size: contain;
+}
+
 #mainNav {
   height: calc(5vh + 60%);
   width: 100%;
