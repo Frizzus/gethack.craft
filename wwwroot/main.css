@@ -2397,8 +2397,6 @@ a[aria-busy=true], button[aria-busy=true], input[type=button][aria-busy=true], i
 }*/
 body {
   margin: 0px;
-  width: 100vw;
-  height: 100vh;
   background-color: var(--cloud);
 }
 
@@ -2484,6 +2482,21 @@ h1 {
   height: auto;
 }
 
+#profileNav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+#profileNav ul {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+#profileNav button {
+  display: none;
+}
+
 @media screen and (min-width: 800px) {
   #mainNav {
     height: 100vh;
@@ -2524,6 +2537,13 @@ h1 {
   }
   #accueilNav .profilePicture {
     width: 80%;
+  }
+  #profileNav div {
+    display: flex;
+    flex-direction: row;
+  }
+  #profileNav button {
+    display: block;
   }
 }
 #Displayer {

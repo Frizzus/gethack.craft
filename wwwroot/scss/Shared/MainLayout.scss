@@ -69,6 +69,23 @@
     }
 }
 
+#profileNav{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+
+    ul{
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    button{
+        display: none;
+    }
+}
+
 @media screen and (min-width: 800px) {
     #mainNav{
         height: 100vh;
@@ -117,6 +134,19 @@
 
         .profilePicture{
             width: 80%;
+        }
+    }
+
+    #profileNav{
+
+        div{
+            display: flex;
+            flex-direction: row;
+
+        }
+
+        button{
+            display: block;
         }
     }
     

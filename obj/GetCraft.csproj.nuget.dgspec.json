@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Stagiaire\\Documents\\Web\\GetCraft\\GetCraft.csproj": {}
+    "C:\\Users\\Frizzus\\Documents\\Web\\GetCraft\\GetCraft.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Stagiaire\\Documents\\Web\\GetCraft\\GetCraft.csproj": {
+    "C:\\Users\\Frizzus\\Documents\\Web\\GetCraft\\GetCraft.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Stagiaire\\Documents\\Web\\GetCraft\\GetCraft.csproj",
+        "projectUniqueName": "C:\\Users\\Frizzus\\Documents\\Web\\GetCraft\\GetCraft.csproj",
         "projectName": "GetCraft",
-        "projectPath": "C:\\Users\\Stagiaire\\Documents\\Web\\GetCraft\\GetCraft.csproj",
-        "packagesPath": "C:\\Users\\Stagiaire\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Stagiaire\\Documents\\Web\\GetCraft\\obj\\",
+        "projectPath": "C:\\Users\\Frizzus\\Documents\\Web\\GetCraft\\GetCraft.csproj",
+        "packagesPath": "C:\\Users\\Frizzus\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Frizzus\\Documents\\Web\\GetCraft\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Stagiaire\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Frizzus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
