@@ -1,3 +1,15 @@
 .hack{
     background-size: contain;
+
+    transition-property: filter;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+}
+
+.hMain{
+    display: none;
+}
+
+.hack:hover{
+    filter: grayscale(90%);
 }
