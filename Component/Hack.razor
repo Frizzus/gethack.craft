@@ -1,11 +1,37 @@
- <article class="hack" style="background-image: url(@imgUrl);">
-   <section class="hHeader">
-      
-   </section>
-   <section class="hMain"></section>
- </article>
+<article class="placeholderPlan" tabindex="-1">
+  <input type="checkbox" id="@id_hack">
+  <label for="@id_hack">
+    <div class="hack" style="background-image: url(@imgUrl);">
+      <section class="hHeader">
+        <div>
+          <span>type</span>
+          <span>auteur</span>
+        </div>
+        <h3>Titre Hack</h3>
+      </section>
+      <section class="hMain">
+        <p>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde quas, tempore optio reprehenderit, vero
+          accusantium, velit corporis repudiandae voluptas ducimus nobis voluptatibus. Modi velit optio natus iusto
+          labore, animi amet?
+        </p>
+        <ul>
+          @for (int i = 0; i < nbComment; i++)
+          {
+            <li>Lorem ipsum dolor sit amet</li>
+          }
+        </ul>
+      </section>
+    </div>
+  </label>
+</article>
 
- @code{
-    [Parameter]
-    public string imgUrl {get;set;} = "build.webp";
- }
+@code {
+  [Parameter]
+  public string imgUrl { get; set; } = "build.webp";
+
+  [Parameter]
+  public int id_hack { get; set; }
+
+  public int nbComment = 10;
+}

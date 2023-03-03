@@ -2418,26 +2418,134 @@ h1 {
   text-align: center;
 }
 
+.placeholderPlan {
+  position: static;
+  width: 100%;
+  height: 70%;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--base);
+}
+.placeholderPlan input {
+  display: none;
+}
+.placeholderPlan > label {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  display: block;
+}
+.placeholderPlan > input:checked ~ label {
+  position: fixed;
+  z-index: 10;
+  margin: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(17, 18, 22, 0.8);
+}
+.placeholderPlan > input:checked ~ label > .hack {
+  position: fixed;
+  z-index: 100;
+  left: 5%;
+  top: 5%;
+  width: 90%;
+  height: 90%;
+  overflow-y: scroll;
+  border-radius: calc(var(--border-radius) * 2);
+  box-shadow: 0 0 5px var(--cloud);
+  scrollbar-width: thin;
+}
+.placeholderPlan > input:checked ~ label > .hack .hMain {
+  display: block;
+  background-color: var(--cloud);
+  position: relative;
+  top: -12%;
+  border-radius: calc(var(--border-radius) * 2);
+}
+.placeholderPlan > input:checked ~ label > .hack .hHeader * {
+  opacity: 1;
+}
+.placeholderPlan > input:checked ~ label > .hack:hover {
+  filter: none;
+}
+.placeholderPlan .hack::-webkit-scrollbar {
+  display: none;
+}
+
 .hack {
-  background-size: contain;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  margin: 0;
   transition-property: filter;
   transition-duration: 0.2s;
   transition-timing-function: ease-in-out;
 }
 
+.hack:hover {
+  filter: grayscale(50%);
+}
+
+.hHeader {
+  margin: 0;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 10% 90%;
+}
+.hHeader div {
+  height: -moz-fit-content;
+  height: fit-content;
+  background-color: var(--interface);
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 5%;
+  color: var(--cadet);
+}
+.hHeader h3 {
+  text-align: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: auto;
+  color: var(--cloud);
+  text-shadow: 1px 1px 5px var(--interface);
+}
+.hHeader * {
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+
+.hHeader:hover * {
+  opacity: 1;
+}
+
 .hMain {
   display: none;
+  margin-bottom: 0;
+  padding: 5% 2%;
+}
+.hMain ul {
+  margin-bottom: 0;
 }
 
-.hack:hover {
-  filter: grayscale(90%);
+@media screen and (min-width: 800px) {
+  .hack {
+    margin-right: 0;
+    margin-left: 0;
+  }
 }
-
 #mainNav {
   height: calc(5vh + 60%);
   width: 100%;
   background-color: var(--base);
   position: fixed;
+  z-index: 200;
   bottom: -60%;
   transition: bottom 0.3s ease-in-out;
   display: block;
@@ -2563,11 +2671,6 @@ h1 {
 }
 #Displayer {
   width: 100%;
-}
-
-#Displayer div {
-  background-color: black;
-  border-radius: 1rem;
 }
 
 .dispGrid {

@@ -3,6 +3,7 @@
     width: 100%;
     background-color: var(--base);
     position: fixed;
+    z-index: 200;
     bottom: -60%;
     transition: bottom 0.3s ease-in-out;
     display: block;
