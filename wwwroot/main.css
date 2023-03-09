@@ -2532,6 +2532,11 @@ h1 {
 }
 .hMain ul {
   margin-bottom: 0;
+  padding-left: 0px;
+}
+.hMain li {
+  border-top: #43444D solid 1px;
+  list-style: none;
 }
 
 @media screen and (min-width: 800px) {
@@ -2540,6 +2545,24 @@ h1 {
     margin-left: 0;
   }
 }
+.comment {
+  position: relative;
+}
+.comment img {
+  height: 4rem;
+  border-radius: 4rem;
+}
+.comment div {
+  position: relative;
+  width: -moz-fit-content;
+  width: fit-content;
+  left: 60%;
+}
+.comment button {
+  width: 6rem;
+  display: inline;
+}
+
 #mainNav {
   height: calc(5vh + 60%);
   width: 100%;
@@ -2627,19 +2650,20 @@ h1 {
     background-color: var(--base);
     position: fixed;
     bottom: 0px;
-    left: -20vw;
+    left: -25vw;
     transition: left 0.3s ease-in-out;
     display: block;
   }
   #mainNav > div:nth-of-type(1), #mainNav div:nth-of-type(2) {
     position: absolute;
     background-color: var(--base);
-    width: 5vw;
-    height: 30vh;
+    background-image: url("/wwwroot/hamburger.svg");
+    width: 4vw;
+    height: 10vh;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
     border-top-left-radius: 0px;
-    top: 10vh;
+    top: 0;
     left: 25vw;
   }
   #mainNav section {
