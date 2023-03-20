@@ -2418,6 +2418,11 @@ h1 {
   text-align: center;
 }
 
+#main {
+  width: 90%;
+  margin: auto;
+}
+
 .placeholderPlan {
   position: static;
   width: 100%;
@@ -2545,6 +2550,47 @@ h1 {
     margin-left: 0;
   }
 }
+#profileHeader {
+  display: grid;
+}
+
+#fixPart {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  height: 30vh;
+}
+#fixPart div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+#fixPart p {
+  font-size: 0.8rem;
+  margin: 0;
+}
+#fixPart h2 {
+  margin: 0;
+}
+#fixPart img {
+  display: none;
+}
+
+@media screen and (min-width: 800px) {
+  #fixPart img {
+    display: block;
+    height: 10rem;
+    width: 10rem;
+    border-radius: 10rem;
+  }
+  #fixPart h2 {
+    padding-left: 2rem;
+  }
+}
 .comment {
   position: relative;
 }
@@ -2590,6 +2636,14 @@ h1 {
   margin-top: 5vh;
   transition: margin-top 0.3s ease-in-out;
   padding: var(--spacing);
+}
+
+#mainFooter {
+  background-color: var(--soft);
+  height: 50vmin;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
 }
 
 #mainNav:focus-within {

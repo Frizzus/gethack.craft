@@ -1,0 +1,51 @@
+#profileHeader{
+    display: grid;    
+
+    
+}
+
+#fixPart{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center; 
+    margin: 0;
+    height: 30vh;
+
+    div{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    p{
+        font-size: 0.8rem;
+        margin: 0;
+    }
+
+    h2{
+        margin: 0;
+    }
+
+    img{
+        display: none;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    #fixPart{
+        img{
+            display: block;
+            height: 10rem;
+            width: 10rem;
+            border-radius: 10rem;
+        }
+
+        h2{
+            padding-left: 2rem;
+        }
+    }
+}
+
