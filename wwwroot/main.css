@@ -2683,18 +2683,37 @@ h1 {
 }
 
 #profileNav {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-rows: 60% 40%;
   height: 100%;
 }
 #profileNav ul {
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   align-items: center;
 }
+#profileNav li {
+  background-color: var(--cloud);
+  border-radius: 1rem;
+  text-align: center;
+  width: 40%;
+}
 #profileNav button {
-  display: none;
+  margin-top: auto;
+  margin-bottom: auto;
+  height: 6rem;
+  width: 6rem;
+  background-color: red;
+  border: none;
+  border-radius: 1rem;
+}
+#profileNav img, #profileNav a, #profileNav div {
+  height: 100%;
+}
+#profileNav div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 @media screen and (min-width: 800px) {
