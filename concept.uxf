@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.0.0"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>531</x><y>171</y><w>234</w><h>216</h></coordinates><panel_attributes>Hack
+<diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>531</x><y>171</y><w>234</w><h>216</h></coordinates><panel_attributes>Hack
 --
 +title: string
 -tags: string[]
@@ -14,7 +14,7 @@
 +deleteFromDB():bool
 +updateToDB():bool
 +constructForDB():bool
-afficher [composant]
++afficher [composant]
 
 
 
@@ -65,8 +65,8 @@ _+adminDelete(Comment): void_
 _+adminDelete(post: Hack): void_
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>549</x><y>540</y><w>180</w><h>108</h></coordinates><panel_attributes>Comment
 --
-text: VARCHAR(200)
-nbLikes: int
+-text: VARCHAR(200)
+-nbLikes: int
 -dateCreated: Date
 
 --

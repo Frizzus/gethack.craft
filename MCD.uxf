@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>18</x><y>170</y><w>200</w><h>160</h></coordinates><panel_attributes>Hack
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>10</x><y>170</y><w>200</w><h>160</h></coordinates><panel_attributes>Hack
 --
 title:VARCHAR(50)
 tags: VARCHAR(255)
@@ -7,7 +7,7 @@ desc: VARCHAR(200)
 nbLikes: int
 reported: boolean
 reasonReported: VARCHAR(200)
-hackType: VARCAHR(50)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>498</x><y>0</y><w>170</w><h>150</h></coordinates><panel_attributes>User
+hackType: VARCAHR(50)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>490</x><y>0</y><w>170</w><h>150</h></coordinates><panel_attributes>User
 --
 username: VARCHAR(100)
 pwd: VARCHAR(255)
@@ -17,18 +17,18 @@ desc: File
 ban:boolean
 banTime: Date
 isAdmin: boolean
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>78</x><y>80</y><w>210</w><h>110</h></coordinates><panel_attributes>lt=-
-m1=1,1</panel_attributes><additional_attributes>10;90;10;10;190;10</additional_attributes></element><element><id>Relation</id><coordinates><x>368</x><y>60</y><w>150</w><h>40</h></coordinates><panel_attributes>lt=-
-m1=0,n</panel_attributes><additional_attributes>130;10;40;10;10;20</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>268</x><y>70</y><w>120</w><h>40</h></coordinates><panel_attributes>Posseder</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>128</x><y>30</y><w>120</w><h>40</h></coordinates><panel_attributes>Aimer</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>48</x><y>40</y><w>100</w><h>150</h></coordinates><panel_attributes>lt=-
-m1=0,n</panel_attributes><additional_attributes>10;130;10;10;80;10</additional_attributes></element><element><id>Relation</id><coordinates><x>238</x><y>20</y><w>280</w><h>50</h></coordinates><panel_attributes>lt=-
-m1=0,n</panel_attributes><additional_attributes>260;10;40;10;10;30</additional_attributes></element><element><id>UMLClass</id><coordinates><x>258</x><y>400</y><w>200</w><h>150</h></coordinates><panel_attributes>Comment
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>70</x><y>80</y><w>210</w><h>110</h></coordinates><panel_attributes>lt=-
+m1=1,1</panel_attributes><additional_attributes>10;90;10;10;190;10</additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>60</y><w>150</w><h>40</h></coordinates><panel_attributes>lt=-
+m1=0,n</panel_attributes><additional_attributes>130;10;40;10;10;20</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>260</x><y>70</y><w>120</w><h>40</h></coordinates><panel_attributes>Posseder</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>120</x><y>30</y><w>120</w><h>40</h></coordinates><panel_attributes>Aimer</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>40</x><y>40</y><w>100</w><h>150</h></coordinates><panel_attributes>lt=-
+m1=0,n</panel_attributes><additional_attributes>10;130;10;10;80;10</additional_attributes></element><element><id>Relation</id><coordinates><x>230</x><y>20</y><w>280</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=0,n</panel_attributes><additional_attributes>260;10;40;10;10;30</additional_attributes></element><element><id>UMLClass</id><coordinates><x>250</x><y>400</y><w>200</w><h>150</h></coordinates><panel_attributes>Comment
 --
 content: VARCHAR(200)
 nbLikes: int
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>278</x><y>290</y><w>120</w><h>40</h></coordinates><panel_attributes>Inspecter</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>388</x><y>140</y><w>220</w><h>190</h></coordinates><panel_attributes>lt=-
-m1=0,n</panel_attributes><additional_attributes>190;10;70;170;10;170</additional_attributes></element><element><id>Relation</id><coordinates><x>208</x><y>300</y><w>90</w><h>40</h></coordinates><panel_attributes>lt=-
-m1=1,n</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>528</x><y>500</y><w>120</w><h>40</h></coordinates><panel_attributes>Poster</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>448</x><y>510</y><w>100</w><h>40</h></coordinates><panel_attributes>lt=-
-m1=1,1</panel_attributes><additional_attributes>10;10;80;10</additional_attributes></element><element><id>Relation</id><coordinates><x>638</x><y>90</y><w>140</w><h>450</h></coordinates><panel_attributes>lt=-
-m1=0,n</panel_attributes><additional_attributes>30;10;120;10;120;430;10;430</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>28</x><y>440</y><w>120</w><h>40</h></coordinates><panel_attributes>Designer</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>78</x><y>320</y><w>50</w><h>140</h></coordinates><panel_attributes>lt=-
-m1=0,n</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>138</x><y>450</y><w>140</w><h>40</h></coordinates><panel_attributes>lt=-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>270</x><y>290</y><w>120</w><h>40</h></coordinates><panel_attributes>Inspecter</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>140</y><w>220</w><h>190</h></coordinates><panel_attributes>lt=-
+m1=0,n</panel_attributes><additional_attributes>190;10;70;170;10;170</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>300</y><w>90</w><h>40</h></coordinates><panel_attributes>lt=-
+m1=1,n</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>520</x><y>500</y><w>120</w><h>40</h></coordinates><panel_attributes>Poster</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>510</y><w>100</w><h>40</h></coordinates><panel_attributes>lt=-
+m1=1,1</panel_attributes><additional_attributes>10;10;80;10</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>90</y><w>140</w><h>450</h></coordinates><panel_attributes>lt=-
+m1=0,n</panel_attributes><additional_attributes>30;10;120;10;120;430;10;430</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>20</x><y>440</y><w>120</w><h>40</h></coordinates><panel_attributes>Designer</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>70</x><y>320</y><w>50</w><h>140</h></coordinates><panel_attributes>lt=-
+m1=0,n</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>130</x><y>450</y><w>140</w><h>40</h></coordinates><panel_attributes>lt=-
 m1=1,1</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element></diagram>
