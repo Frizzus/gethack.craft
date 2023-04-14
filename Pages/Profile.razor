@@ -1,3 +1,24 @@
 @page "/profile"
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore
+@using Microsoft.JSInterop
+@using Microsoft.AspNetCore.DataProtection
 
-<h1>Hi !</h1>
+<header id="profileHeader">
+    <section id="fixPart">
+        <img src="placeholder.svg" alt="">
+        <div>
+            <h2>Utilisateur</h2>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum vitae, at odit consequuntur optio blanditiis expedita iure numquam corporis, magni fugit alias tenetur fuga quas in quam rerum dolore odio.</p>
+        </div>
+    </section>
+    <section id="changingPart">
+        <User>
+            
+        </User>
+    </section>
+</header>
+
+@code{
+
+}
